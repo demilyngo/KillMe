@@ -50,16 +50,19 @@ public class WebController {
         SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
         cachedThreadPool.execute(() -> {
             try {
-                emitter.send("Before sending");
-                System.out.println("SEMAPHORE");
-                stationController.sendMessage(256 + 2); //message to change semaphores
-                eventBuilder.id("5").data(stationController.getState()).build();
-                eventBuilder.id("1").data(order).build();
-                int i = (int) (Math.random() * 5);
-                eventBuilder.id("2").data(MAPS[i]).build();
-                emitter.send(eventBuilder);
-                i = (int) (Math.random() * 5);
-                eventBuilder.id("2").data(MAPS[i]).build();
+                for(char way : order.toCharArray()) {
+                    emitter.send("Before sending");
+                    System.out.println("SEMAPHORE");
+                    stationController.sendMessage(256 + 8); //message to change semaphores
+                    //eventBuilder.id("5").data(stationController.getState()).build();
+                    eventBuilder.id("1").data(MAPS[way]).build();
+
+
+//                    i = (int) (Math.random() * 5);
+//                    eventBuilder.id("2").data(MAPS[i]).build();
+//                    emitter.send(eventBuilder);
+                }
+                eventBuilder.id("2").data("Done sorting").build();
                 emitter.send(eventBuilder);
             } catch (Exception e) {
                 emitter.completeWithError(e);
