@@ -102,7 +102,7 @@ public class StationController {
                     receivedMessage.clear(i); ///CHECK STOP BIT ingore
                 }
                 System.out.println("Received: " + receivedMessage.get(i));
-                Thread.sleep(1000);
+                Thread.sleep(100);
             }
 //            if(receivedMessage.get(startBitLength+startBitLength+controllerLength+taskLength-1)) { //?????? chto eto?
 //                receivedMessage.clear();
@@ -190,12 +190,12 @@ public class StationController {
                 if (bit == '1') {
                     pin.high();
                     System.out.println("Sent: " + bit);
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                     continue;
                 }
                 pin.low();
                 System.out.println("Sent: " + bit);
-                Thread.sleep(1000);
+                Thread.sleep(100);
             }
             pin.low();
             sending = false;
