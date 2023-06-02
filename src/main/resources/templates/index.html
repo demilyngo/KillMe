@@ -77,7 +77,7 @@
         var str = $( "form" ).serializeArray();
         var order = "order=";
         str.forEach(function(elem) {
-            order += elem.value+1;
+            order += elem.value;
         });
         console.log(order);
         $( "#result" ).text( order );

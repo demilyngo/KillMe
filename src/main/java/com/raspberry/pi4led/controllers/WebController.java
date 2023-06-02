@@ -54,7 +54,7 @@ public class WebController {
                     System.out.println("SEMAPHORE " + way);
                     stationController.sendMessage(256 + 2); //message to change semaphores
                     //eventBuilder.id("5").data(stationController.getState()).build();
-                    eventBuilder.id("1").data("Screenshot_" + way).build();
+                    eventBuilder.id("1").data("Screenshot_" + ((int)way+1)).build();
                     emitter.send(eventBuilder);
 
 
