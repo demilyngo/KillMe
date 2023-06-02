@@ -72,8 +72,9 @@ public class WebController {
                 System.out.println("INSIDE SSE");
                 for (char way : order.toCharArray()) {
                     System.out.println("INSIDE LOOP");
-                    stationController.setCurrentWay(way);
+                    //stationController.setCurrentWay(way);
                     try {
+                        emitter.send("inside try");
                         eventBuilder.id("1").data(MAPS[way]).build();
                         emitter.send(eventBuilder);
                         System.out.println("SEMAPHORE");
