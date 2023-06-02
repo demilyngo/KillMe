@@ -1,0 +1,180 @@
+body {
+    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
+}
+
+.mainHeader {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 40px;
+    background-color: #6495ED;
+    box-shadow: 0px 1px 1px 0px #4682B4;
+    color: white;
+    margin-top: 0;
+}
+
+.mainContent {
+    margin-top: 50px;
+    display: flex;
+    justify-content: flex-start;
+    height: 850px;
+}
+
+.leftSide {
+
+    background-color: white;
+}
+
+.state {
+
+    font-size: 26px;
+}
+
+.rightSide {
+
+    margin: 0 auto;
+    width: 1400px;
+}
+
+.wagons {
+    width:400px;
+    height:630px;
+    background: #fff;
+    border: 2px solid #6495ED;
+    overflow-y: auto;
+    vertical-align: bottom;
+}
+
+.firstRow {
+    font-size: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.wagonItem {
+    display: flex;
+    justify-content: space-around;
+    background-color: #6495ED;
+    border: 1px solid #C1C1C1;
+}
+
+.wagonNumber {
+    width: 24px;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.selectWagon {
+    height: 20px;
+    margin: auto 0;
+}
+
+.selectWagon:hover {
+    cursor: pointer;
+}
+
+.bottomRight {
+    display: flex;
+    justify-content: space-around;
+
+    border-radius: 20px ;
+    margin-top: 60px;
+    background-color: #6495ED;
+    color: #ffffff;
+}
+
+.bottomRight p {
+    font-size: 26px;
+}
+
+.bottomRight button {
+    border: 2px solid black;
+    font-size: 26px;
+    height: 40px;
+    margin: auto 0;
+    border-radius: 20px;
+}
+
+.bottomRight button:hover {
+    background-color: #cccccc;
+    box-shadow: 0px 3px 3px 0px #cccccc;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.select {
+    border-radius: 20px;
+    margin-top: 7px;
+    position: relative;
+    width: 150px;
+
+}
+
+.select.is-active .select_body {
+    display: block;
+}
+
+.select.is-active .select_body {
+    display: block;
+}
+
+.select_header {
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    display: flex;
+    background-color: #ffffff;
+}
+
+.select_current {
+    border-radius: 20px;
+    background-color: #ffffff;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 8px;
+}
+
+.select_icon {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    height: 40px;
+    margin-left: auto;
+    text-align: center;
+    width: 40px;
+}
+
+.select_body {
+    display: none;
+    background-color: #FFFFFF;
+    border: 1px solid #cccccc;
+    border-top: 0;
+    width: 90%;
+    margin: 0 auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 100;
+}
+
+.select_item {
+    line-height: 24px;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.select_item:hover {
+    background-color: #f2f2f2;
+}
+
+.map {
+    margin-top: 95px;
+    margin-left: 100px;
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <link rel="stylesheet" href="/styles/index.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrapper" th:each="station : ${station}">
+    <header class="mainHeader" th:text="${station.getNameOfStation()}">Станция Сургутская</header>
+
+    <div class="mainContent" >
+        <div class="leftSide">
+            <img src="../images/SurSU_logo.jpg" alt="Логотип СурГУ">
+            <p class="state" th:text="'Состояние: ' + ${station.getState().displayValue}"></p>
+
+
+
+            <form id="form">
+                <div class="wagons">
+                    <div class="firstRow">
+                        <p>Вагон</p>
+                        <p>Пункт назначения</p>
+                        <p>Тип груза</p>
+                    </div>
+                    <div class="wagonItem" th:each="wagon : ${wagonList}">
+                        <div class="wagonNumber">
+                            <p th:text="${wagon.getIndex()}"/>
+                        </div>
+
+                        <!--                        <div class="select" th:id="${wagon.getIndex()}" >-->
+                        <!--                            <div class="select_header" >-->
+                        <!--                                <span class="select_current" th:value="${wagon.getWhere()}" th:text="${wagon.getWhere()}" th:name="${wagon.getIndex()}"></span>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="select_body">-->
+                        <!--                                <div class="select_item" th:each="city : ${cities}" th:if="${not (wagon.getWhere() eq city)}" th:text="${city}" th:value="${city}"></div>-->
+
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+
+
+                        <select class="selectWagon" th:name="'wagon'">
+                            <option th:value="${wagon.getWayIndex()}" th:text="${wagon.getWhere()}"></option>
+                            <option th:each="city : ${cities}" th:if="${not (wagon.getWhere() eq city)}" th:text="${city}" th:value="${cities.indexOf(city)}"></option>
+                        </select>
+
+                        <input type="checkbox" class="type"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="rightSide">
+            <div>Ожидают сортировку: <span id="toSortCounter"></span></div>
+            <img class="map" src="../images/Screenshot_1.jpg" alt="Тут должна быть карта">
+            <div class="bottomRight">
+                <button id="startButton">Начать сортировку</button>
+                <button id="waitButton">Ожидание</button>
+                <p th:text="${station.getControl().displayValue}"></p>
+            </div>
+        </div>
+    </div>
+    <p id="result"></p>
+</div>
+<script>
+    //ORDER OF WAGONS
+    function showValues() {
+        var str = $( "form" ).serializeArray();
+        var order = "order=";
+        str.forEach(function(elem) {
+            order += elem.value;
+        });
+        console.log(order);
+        $( "#result" ).text( str );
+    }
+    $( "select" ).on( "change", showValues );
+
+    // //SEND TO STARTING POSITION
+    // $("#waitButton").click(function (e) {
+    //     e.preventDefault();
+    //     $(".state").text("Состояние: Прибытие");
+    //
+    //     document.querySelector("#waitButton").style.display = "none";
+    //
+    //     if (window.EventSource == null) {
+    //         alert('The browser does not support Server-Sent Events');
+    //     } else {
+    //         var eventSource = new EventSource('/start');
+    //         eventSource.onopen = function () {
+    //             console.log('connection is established');
+    //         };
+    //         eventSource.onerror = function (error) {
+    //             console.log('connection state: ' + eventSource.readyState + ', error: ' + error);
+    //         };
+    //         eventSource.onmessage = function (event) {
+    //             console.log('id: ' + event.lastEventId + ', data: ' + event.data);
+    //             switch (event.lastEventId ) {
+    //                 case "1":
+    //                     $("#toSortCounter").text(event.data)
+    //                     break;
+    //                 case "2":
+    //                     $(".state").text("Состояние: Ожидание");
+    //                     eventSource.close();
+    //                     break;
+    //             }
+    //         };
+    //     }
+    // })
+
+    //START SORT
+    $("#startButton").click(function(e) {
+        e.preventDefault();
+
+        $(".state").text("Состояние: Сортировка");
+        var wagonList = document.querySelectorAll(".selectWagon");
+        for (let el of wagonList) {el.disabled = true}
+        document.querySelector("#overlay").style.display = "block";
+
+        var str = $( "form" ).serializeArray();
+        var order = "order=";
+        str.forEach(function(elem) {
+            order += elem.value;
+        });
+
+        if (window.EventSource == null) {
+            alert('The browser does not support Server-Sent Events');
+        } else {
+            var eventSource = new EventSource('/start?' + order);
+            eventSource.onopen = function () {
+                console.log('connection is established');
+            };
+            eventSource.onerror = function (error) {
+                console.log('connection state: ' + eventSource.readyState + ', error: ' + error);
+            };
+            eventSource.onmessage = function (event) {
+                console.log('id: ' + event.lastEventId + ', data: ' + event.data);
+                switch (event.lastEventId) {
+                    case "1":
+                        $(".map").attr("src", "../images/" + event.data + ".jpg")
+                        break;
+                    case "2":
+                        $(".state").text("Состояние: Ожидание");
+                        for (let el of wagonList) {el.disabled = false;}
+                        document.querySelector("#overlay").style.display = "none";
+                        eventSource.close();
+                        console.log('connection is closed');
+                        break;
+                }
+            };
+        }
+    })
+    showValues();
+</script>
+</body>
+</html>
