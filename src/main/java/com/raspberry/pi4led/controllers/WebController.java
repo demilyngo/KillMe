@@ -51,11 +51,10 @@ public class WebController {
         cachedThreadPool.execute(() -> {
             try {
                 for(char way : order.toCharArray()) {
-                    emitter.send("Before sending");
-                    System.out.println("SEMAPHORE");
+                    System.out.println("SEMAPHORE " + way+1);
                     stationController.sendMessage(256 + 2); //message to change semaphores
                     //eventBuilder.id("5").data(stationController.getState()).build();
-                    eventBuilder.id("1").data("Screenshot_"+way).build();
+                    eventBuilder.id("1").data("Screenshot_" + (way+1)).build();
                     emitter.send(eventBuilder);
 
 
