@@ -79,9 +79,9 @@ public class WebController {
                         stationController.sendMessage(256 + 2 * way); //message to change semaphores
                         stationController.sendMessage(320 + 2 * way); //message to change way
                         stationController.sendMessage(336); //start moving
-                        while (StationController.convertReceived(stationController.getReceivedMessage()) != 384 + 2 * way) {
-                            Thread.onSpinWait();
-                        }
+//                        while (StationController.convertReceived(stationController.getReceivedMessage()) != 384 + 2 * way) {
+//                            Thread.onSpinWait();
+//                        }
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -108,11 +108,12 @@ public class WebController {
             stationController.setState(State.COMING);
             cachedThreadPool.execute(() -> {
                 try {
+                    emitter.send("inWaiting");
                     stationController.sendMessage(334); //moving to position for sorting
-                    while (StationController.convertReceived(stationController.getReceivedMessage()) != 398
-                            || StationController.convertReceived(stationController.getReceivedMessage()) != 400) {
-                        Thread.onSpinWait();
-                    }
+//                    while (StationController.convertReceived(stationController.getReceivedMessage()) != 398
+//                            || StationController.convertReceived(stationController.getReceivedMessage()) != 400) {
+//                        Thread.onSpinWait();
+//                    }
                     if (StationController.convertReceived(stationController.getReceivedMessage()) == 398) {
                         stationController.setTrainCounter(stationController.getTrainCounter() + 1);
                         eventBuilder.id("1").data(stationController.getTrainCounter()).build();
