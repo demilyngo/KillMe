@@ -76,6 +76,7 @@ public class WebController {
                     try {
                         eventBuilder.id("1").data(MAPS[way]).build();
                         emitter.send(eventBuilder);
+                        
                         stationController.sendMessage(256 + 2 * way); //message to change semaphores
                         stationController.sendMessage(320 + 2 * way); //message to change way
                         stationController.sendMessage(336); //start moving

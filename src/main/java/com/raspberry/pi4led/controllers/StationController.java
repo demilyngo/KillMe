@@ -71,20 +71,16 @@ public class StationController {
                 checkControllerMessage = checkController1;
                 System.out.println("I check 1");
                 sendMessage(checkControllerMessage);
-                receiveMessage();
                 checkControllerMessage = checkController2;
                 System.out.println("I check 2");
                 sendMessage(checkControllerMessage);
-                receiveMessage();
                 checkControllerMessage = checkController3;
                 System.out.println("I check 3");
                 sendMessage(checkControllerMessage);
-                receiveMessage();
                 if(getControl() == Control.FIELD) {
                     System.out.println("I check 4");
                     checkControllerMessage = checkController4;
                     sendMessage(checkControllerMessage);
-                    receiveMessage();
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -204,6 +200,9 @@ public class StationController {
             pin.low();
             sending = false;
             setInput();
+            if(message.equals(checkControllerMessage)) { //if checking for input then receive. else sending from application
+                receiveMessage();
+            }
         }
     }
 
