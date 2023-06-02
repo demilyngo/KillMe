@@ -50,6 +50,9 @@ public class WebController {
         SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
         cachedThreadPool.execute(() -> {
             try {
+                emitter.send("Before sending");
+                System.out.println("SEMAPHORE");
+                stationController.sendMessage(256 + 2); //message to change semaphores
                 eventBuilder.id("5").data(stationController.getState()).build();
                 eventBuilder.id("1").data(order).build();
                 int i = (int) (Math.random() * 5);
