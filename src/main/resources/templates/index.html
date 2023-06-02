@@ -80,7 +80,8 @@
             order += elem.value;
         });
         console.log(order);
-        $( "#result" ).text( str );
+        $( "#result" ).text( order );
+        return order;
     }
     $( "select" ).on( "change", showValues );
 
@@ -119,17 +120,19 @@
     //START SORT
     $("#startButton").click(function(e) {
         e.preventDefault();
+        order = showValues();
+        var str = $( "form" ).serializeArray();
+        var order = "order=";
+        str.forEach(function(elem) {
+            order += elem.value;
+        });
 
         $(".state").text("Состояние: Сортировка");
         var wagonList = document.querySelectorAll(".selectWagon");
         for (let el of wagonList) {el.disabled = true}
         document.querySelector("#overlay").style.display = "block";
 
-        var str = $( "form" ).serializeArray();
-        var order = "order=";
-        str.forEach(function(elem) {
-            order += elem.value;
-        });
+
 
         if (window.EventSource == null) {
             alert('The browser does not support Server-Sent Events');
