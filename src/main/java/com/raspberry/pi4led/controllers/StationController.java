@@ -91,7 +91,7 @@ public class StationController {
     long listenerId = thread.getId();
 
 
-    public synchronized void receiveMessage() throws InterruptedException {
+    public void receiveMessage() throws InterruptedException {
         if (!sending && !receiving) {
             receivedMessage.clear();
             receiving = true;
