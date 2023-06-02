@@ -84,37 +84,37 @@
     }
     $( "select" ).on( "change", showValues );
 
-    // //SEND TO STARTING POSITION
-    // $("#waitButton").click(function (e) {
-    //     e.preventDefault();
-    //     $(".state").text("Состояние: Прибытие");
-    //
-    //     document.querySelector("#waitButton").style.display = "none";
-    //
-    //     if (window.EventSource == null) {
-    //         alert('The browser does not support Server-Sent Events');
-    //     } else {
-    //         var eventSource = new EventSource('/start');
-    //         eventSource.onopen = function () {
-    //             console.log('connection is established');
-    //         };
-    //         eventSource.onerror = function (error) {
-    //             console.log('connection state: ' + eventSource.readyState + ', error: ' + error);
-    //         };
-    //         eventSource.onmessage = function (event) {
-    //             console.log('id: ' + event.lastEventId + ', data: ' + event.data);
-    //             switch (event.lastEventId ) {
-    //                 case "1":
-    //                     $("#toSortCounter").text(event.data)
-    //                     break;
-    //                 case "2":
-    //                     $(".state").text("Состояние: Ожидание");
-    //                     eventSource.close();
-    //                     break;
-    //             }
-    //         };
-    //     }
-    // })
+    //SEND TO STARTING POSITION
+    $("#waitButton").click(function (e) {
+        e.preventDefault();
+        $(".state").text("Состояние: Прибытие");
+
+        document.querySelector("#waitButton").style.display = "none";
+
+        if (window.EventSource == null) {
+            alert('The browser does not support Server-Sent Events');
+        } else {
+            var eventSource = new EventSource('/wait');
+            eventSource.onopen = function () {
+                console.log('connection is established');
+            };
+            eventSource.onerror = function (error) {
+                console.log('connection state: ' + eventSource.readyState + ', error: ' + error);
+            };
+            eventSource.onmessage = function (event) {
+                console.log('id: ' + event.lastEventId + ', data: ' + event.data);
+                switch (event.lastEventId ) {
+                    case "1":
+                        $("#toSortCounter").text(event.data)
+                        break;
+                    case "2":
+                        $(".state").text("Состояние: Ожидание");
+                        eventSource.close();
+                        break;
+                }
+            };
+        }
+    })
 
     //START SORT
     $("#startButton").click(function(e) {

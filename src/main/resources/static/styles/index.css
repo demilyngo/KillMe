@@ -178,3 +178,13 @@ body {
     margin-top: 95px;
     margin-left: 100px;
 }
+
+#overlay {
+    display: none;
+    z-index: 99;
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    background: gray;
+    opacity: 50%;
+}
