@@ -76,9 +76,11 @@ public class WebController {
                     try {
                         eventBuilder.id("1").data(MAPS[way]).build();
                         emitter.send(eventBuilder);
-
+                        System.out.println("SEMAPHORE");
                         stationController.sendMessage(256 + 2 * way); //message to change semaphores
+                        System.out.println("WAY");
                         stationController.sendMessage(320 + 2 * way); //message to change way
+                        System.out.println("MOVING");
                         stationController.sendMessage(336); //start moving
 //                        while (StationController.convertReceived(stationController.getReceivedMessage()) != 384 + 2 * way) {
 //                            Thread.onSpinWait();
