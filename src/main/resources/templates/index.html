@@ -134,6 +134,7 @@
         if (window.EventSource == null) {
             alert('The browser does not support Server-Sent Events');
         } else {
+            console.log(order);
             var eventSource = new EventSource('/start?' + order);
             eventSource.onopen = function () {
                 console.log('connection is established');
