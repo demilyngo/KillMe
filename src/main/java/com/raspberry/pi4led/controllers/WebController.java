@@ -45,65 +45,65 @@ public class WebController {
     @GetMapping(path = "/start", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
     public SseEmitter getWords(@RequestParam(value = "order", defaultValue = "0") String order) {
-//        stationController.setState(State.SORTING);
-//        SseEmitter emitter = new SseEmitter();
-//        SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
-//        cachedThreadPool.execute(() -> {
-//            try {
-//                eventBuilder.id("5").data(stationController.getState()).build();
-//                eventBuilder.id("1").data(order).build();
-//                int i = (int) (Math.random() * 5);
-//                eventBuilder.id("2").data(MAPS[i]).build();
-//                emitter.send(eventBuilder);
-//                i = (int) (Math.random() * 5);
-//                eventBuilder.id("2").data(MAPS[i]).build();
-//                emitter.send(eventBuilder);
-//            } catch (Exception e) {
-//                emitter.completeWithError(e);
-//            }
-//        });
-//        return emitter;
-
+        stationController.setState(State.SORTING);
         SseEmitter emitter = new SseEmitter();
         SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
-        if(stationController.getState() != State.SORTING) { //to stop threads from multiplying
-            stationController.setState(State.SORTING);
-            cachedThreadPool.execute(() -> {
-                System.out.println("INSIDE SSE");
-                for (char way : order.toCharArray()) {
-                    System.out.println("INSIDE LOOP");
-                    //stationController.setCurrentWay(way);
-                    try {
-                        emitter.send("inside try");
-                        eventBuilder.id("1").data(MAPS[way]).build();
-                        emitter.send(eventBuilder);
-                        emitter.send("Before sending");
-                        System.out.println("SEMAPHORE");
-                        stationController.sendMessage(256 + 2 * way); //message to change semaphores
-                        emitter.send("Sent semaphore");
-                        System.out.println("WAY");
-                        stationController.sendMessage(320 + 2 * way); //message to change way
-                        emitter.send("Sent way");
-                        System.out.println("MOVING");
-                        stationController.sendMessage(336); //start moving
-                        emitter.send("After sending");
-//                        while (StationController.convertReceived(stationController.getReceivedMessage()) != 384 + 2 * way) {
-//                            Thread.onSpinWait();
-//                        }
-                    } catch (IOException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                try {
-                    eventBuilder.id("2").data("Finished sorting").build();
-                    emitter.send(eventBuilder);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+        cachedThreadPool.execute(() -> {
+            try {
+                eventBuilder.id("5").data(stationController.getState()).build();
+                eventBuilder.id("1").data(order).build();
+                int i = (int) (Math.random() * 5);
+                eventBuilder.id("2").data(MAPS[i]).build();
+                emitter.send(eventBuilder);
+                i = (int) (Math.random() * 5);
+                eventBuilder.id("2").data(MAPS[i]).build();
+                emitter.send(eventBuilder);
+            } catch (Exception e) {
+                emitter.completeWithError(e);
+            }
+        });
         return emitter;
+
+//        SseEmitter emitter = new SseEmitter();
+//        SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
+//        if(stationController.getState() != State.SORTING) { //to stop threads from multiplying
+//            stationController.setState(State.SORTING);
+//            cachedThreadPool.execute(() -> {
+//                System.out.println("INSIDE SSE");
+//                for (char way : order.toCharArray()) {
+//                    System.out.println("INSIDE LOOP");
+//                    //stationController.setCurrentWay(way);
+//                    try {
+//                        emitter.send("inside try");
+//                        eventBuilder.id("1").data(MAPS[way]).build();
+//                        emitter.send(eventBuilder);
+//                        emitter.send("Before sending");
+//                        System.out.println("SEMAPHORE");
+//                        stationController.sendMessage(256 + 2 * way); //message to change semaphores
+//                        emitter.send("Sent semaphore");
+//                        System.out.println("WAY");
+//                        stationController.sendMessage(320 + 2 * way); //message to change way
+//                        emitter.send("Sent way");
+//                        System.out.println("MOVING");
+//                        stationController.sendMessage(336); //start moving
+//                        emitter.send("After sending");
+////                        while (StationController.convertReceived(stationController.getReceivedMessage()) != 384 + 2 * way) {
+////                            Thread.onSpinWait();
+////                        }
+//                    } catch (IOException | InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                try {
+//                    eventBuilder.id("2").data("Finished sorting").build();
+//                    emitter.send(eventBuilder);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
+//        return emitter;
     }
 
 
