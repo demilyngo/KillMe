@@ -74,7 +74,7 @@
     </div>
     <p id="result"></p>
     <!-- Скрытый блок модального окна -->
-    <div id="ex1" class="modal">
+    <div id="ex1" class="modal" style="z-index: 3">
         <h2>Ошибка</h2>
         <p>Ошибка в работе контроллера <span id="controllerErrorId"></span></p>
     </div>
@@ -171,8 +171,8 @@
                     case "3":
                         $("#controllerErrorId").text(event.data);
                         $(".modal-click").modal({fadeDuration: 250});
+                        eventSource.close();
                         break;
-                        //modalnoe okno
                 }
             };
         }
