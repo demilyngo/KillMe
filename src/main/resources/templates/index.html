@@ -83,7 +83,7 @@
     <p style="display: none"><a href="#ex1" class="modal-click">Open Modal</a></p>
 </div>
 <script>
-    document.querySelector(".modal-click").disabled = true
+    document.querySelector(".modal-click").disabled = true;
     //ORDER OF WAGONS
     function showValues() {
         var str = $( "form" ).serializeArray();
@@ -103,6 +103,7 @@
         $(".state").text("Состояние: Прибытие");
 
         document.querySelector("#waitButton").style.display = "none";
+        document.querySelector("#startButton").style.display = "block";
 
         if (window.EventSource == null) {
             alert('The browser does not support Server-Sent Events');
@@ -174,6 +175,8 @@
                         $("#controllerErrorId").text(event.data);
                         $(".modal-click").modal({fadeDuration: 250});
                         eventSource.close();
+                        document.querySelector("#startButton").style.display = "none";
+                        document.querySelector("#restartButton").style.display = "block";
                         break;
                 }
             };

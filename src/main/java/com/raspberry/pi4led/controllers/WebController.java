@@ -39,6 +39,37 @@ public class WebController {
         return "index";
     }
 
+    @ResponseBody
+    @GetMapping("/wait")
+    public SseEmitter startSorting()  {
+        SseEmitter emitter = new SseEmitter();
+        SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
+        if(stationController.getState() == State.WAITING) {
+            stationController.setState(State.COMING);
+            cachedThreadPool.execute(() -> {
+                try {
+                    emitter.send("inWaiting");
+                    stationController.sendMessage(334); //moving to position for sorting
+//                    while (StationController.convertReceived(stationController.getReceivedMessage()) != 398
+//                            || StationController.convertReceived(stationController.getReceivedMessage()) != 400) {
+//                        Thread.onSpinWait();
+//                    }
+                    if (StationController.convertReceived(stationController.getReceivedMessage()) == 398) {
+                        stationController.setTrainCounter(stationController.getTrainCounter() + 1);
+                        eventBuilder.id("1").data(stationController.getTrainCounter()).build();
+                        emitter.send(eventBuilder);
+                    } else {
+                        eventBuilder.id("2").data("Ready to sort").build();
+                        emitter.send(eventBuilder);
+                    }
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        return emitter;
+    }
+
     private static final String[] MAPS = "Screenshot_1 Screenshot_2 Screenshot_3 Screenshot_4 Screenshot_5 Screenshot_6".split(" ");
     private final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
     //private final ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
@@ -72,78 +103,11 @@ public class WebController {
             }
         });
         return emitter;
-
-//        SseEmitter emitter = new SseEmitter();
-//        SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
-//        if(stationController.getState() != State.SORTING) { //to stop threads from multiplying
-//            stationController.setState(State.SORTING);
-//            cachedThreadPool.execute(() -> {
-//                System.out.println("INSIDE SSE");
-//                for (char way : order.toCharArray()) {
-//                    System.out.println("INSIDE LOOP");
-//                    //stationController.setCurrentWay(way);
-//                    try {
-//                        emitter.send("inside try");
-//                        eventBuilder.id("1").data(MAPS[way]).build();
-//                        emitter.send(eventBuilder);
-//                        emitter.send("Before sending");
-//                        System.out.println("SEMAPHORE");
-//                        stationController.sendMessage(256 + 2 * way); //message to change semaphores
-//                        emitter.send("Sent semaphore");
-//                        System.out.println("WAY");
-//                        stationController.sendMessage(320 + 2 * way); //message to change way
-//                        emitter.send("Sent way");
-//                        System.out.println("MOVING");
-//                        stationController.sendMessage(336); //start moving
-//                        emitter.send("After sending");
-////                        while (StationController.convertReceived(stationController.getReceivedMessage()) != 384 + 2 * way) {
-////                            Thread.onSpinWait();
-////                        }
-//                    } catch (IOException | InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                try {
-//                    eventBuilder.id("2").data("Finished sorting").build();
-//                    emitter.send(eventBuilder);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//        }
-//        return emitter;
     }
 
-
-    @ResponseBody
-    @GetMapping("/wait")
-    public SseEmitter startSorting()  {
-        SseEmitter emitter = new SseEmitter();
-        SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
-        if(stationController.getState() == State.WAITING) {
-            stationController.setState(State.COMING);
-            cachedThreadPool.execute(() -> {
-                try {
-                    emitter.send("inWaiting");
-                    stationController.sendMessage(334); //moving to position for sorting
-//                    while (StationController.convertReceived(stationController.getReceivedMessage()) != 398
-//                            || StationController.convertReceived(stationController.getReceivedMessage()) != 400) {
-//                        Thread.onSpinWait();
-//                    }
-                    if (StationController.convertReceived(stationController.getReceivedMessage()) == 398) {
-                        stationController.setTrainCounter(stationController.getTrainCounter() + 1);
-                        eventBuilder.id("1").data(stationController.getTrainCounter()).build();
-                        emitter.send(eventBuilder);
-                    } else {
-                        eventBuilder.id("2").data("Ready to sort").build();
-                        emitter.send(eventBuilder);
-                    }
-                } catch (InterruptedException | IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        return emitter;
+    @GetMapping("/restart")
+    public String restartSystem() {
+        stationController.setErrorId(0);
+        return "redirect: /";
     }
 }
