@@ -18,9 +18,11 @@ import java.util.concurrent.Executors;
 @Getter
 enum State{
     WAITING("Ожидание"),
+    COMING("Прибытие"),
+    READY("Готово к сортировке"),
     SORTING("Сортировка"),
-    LEAVING("Отбытие"),
-    COMING("Прибытие");
+    LEAVING("Отбытие");
+
 
     private final String displayValue;
     State(String state) {

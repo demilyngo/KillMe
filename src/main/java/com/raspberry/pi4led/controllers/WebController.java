@@ -59,6 +59,7 @@ public class WebController {
                         eventBuilder.id("1").data(stationController.getTrainCounter()).build();
                         emitter.send(eventBuilder);
                     } else {
+                        stationController.setState(State.READY);
                         eventBuilder.id("2").data("Ready to sort").build();
                         emitter.send(eventBuilder);
                     }
@@ -108,6 +109,7 @@ public class WebController {
     @GetMapping("/restart")
     public String restartSystem() {
         stationController.setErrorId(0);
+        stationController.setState(State.WAITING);
         return "redirect:/";
     }
 }

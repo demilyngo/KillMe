@@ -103,7 +103,7 @@
         $(".state").text("Состояние: Прибытие");
 
         document.querySelector("#waitButton").style.display = "none";
-        document.querySelector("#startButton").style.display = "block";
+
 
         if (window.EventSource == null) {
             alert('The browser does not support Server-Sent Events');
@@ -122,7 +122,8 @@
                         $("#toSortCounter").text(event.data)
                         break;
                     case "2":
-                        $(".state").text("Состояние: Ожидание");
+                        $(".state").text("Состояние: Готово к сортировке");
+                        document.querySelector("#startButton").style.display = "block";
                         eventSource.close();
                         break;
                 }
@@ -132,6 +133,7 @@
 
     //START SORT
     $("#startButton").click(function(e) {
+        document.querySelector("#startButton").style.display = "none";
         e.preventDefault();
         order = showValues();
         var str = $( "form" ).serializeArray();
@@ -176,7 +178,6 @@
                         $("#controllerErrorId").text(event.data);
                         $(".modal-click").modal({fadeDuration: 250});
                         eventSource.close();
-                        document.querySelector("#startButton").style.display = "none";
                         document.querySelector("#restartButton").style.display = "block";
                         break;
                 }
