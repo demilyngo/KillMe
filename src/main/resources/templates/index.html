@@ -69,7 +69,7 @@
                 <button id="waitButton">Ожидание</button>
                 <button id="startButton" style="display: none">Начать сортировку</button>
                 <button id="restartButton" style="display: none">Перезапустить</button>
-                <button id="alarmButton" style="background-color: orangered" th:href="/restart">Авария</button>
+                <a href="/restart"><button id="alarmButton" style="background-color: orangered">Авария</button></a>
                 <p th:text="${station.getControl().displayValue}"></p>
             </div>
         </div>
