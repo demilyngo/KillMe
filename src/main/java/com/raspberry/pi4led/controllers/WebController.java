@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class WebController {
     final StationController stationController = new StationController(State.WAITING, Control.SERVER, 3, "Сургутская");
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String greeting(Model model) throws InterruptedException {
         ArrayList<StationController> station = new ArrayList<StationController>();
         station.add(stationController);
@@ -108,6 +108,6 @@ public class WebController {
     @GetMapping("/restart")
     public String restartSystem() {
         stationController.setErrorId(0);
-        return "redirect: /";
+        return "redirect: index";
     }
 }
