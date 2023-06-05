@@ -11,6 +11,9 @@
             src="https://code.jquery.com/jquery-3.6.4.min.js"
             integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
             crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
 </head>
 <body>
 <div class="wrapper" th:each="station : ${station}">
@@ -70,8 +73,15 @@
         </div>
     </div>
     <p id="result"></p>
+    <!-- Скрытый блок модального окна -->
+    <div id="ex1" class="modal">
+        <h2>Ошибка</h2>
+        <p>Ошибка в работе контроллера <span id="controllerErrorId"></span></p>
+    </div>
+    <p style="display: none"><a href="#ex1" class="modal-click">Open Modal</a></p>
 </div>
 <script>
+    $(".modal-click").disable();
     //ORDER OF WAGONS
     function showValues() {
         var str = $( "form" ).serializeArray();
@@ -158,6 +168,11 @@
                         eventSource.close();
                         console.log('connection is closed');
                         break;
+                    case "3":
+                        $("#controllerErrorId").text(event.data);
+                        $(".modal-click").modal({fadeDuration: 250});
+                        break;
+                        //modalnoe okno
                 }
             };
         }

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -50,6 +52,8 @@ public class StationController {
     private Integer checkController3 = 384;
     private Integer checkController4 = 448;
     private Integer checkControllerMessage;
+    private ArrayList<Integer> errors = new ArrayList<Integer>(Arrays.asList(318, 382, 446, 510));
+    private int errorId = 0;
 
     private State state;
     private Control control;
@@ -104,17 +108,18 @@ public class StationController {
                 System.out.println("Received: " + receivedMessage.get(i));
                 Thread.sleep(100);
             }
-//            if(receivedMessage.get(startBitLength+startBitLength+controllerLength+taskLength-1)) { //?????? chto eto?
-//                receivedMessage.clear();
-//                receiving = false;
-//                return;
-//            }
 
-            if (convertReceived(receivedMessage) == 0) { //controller is connected
+            if (convertReceived(receivedMessage) == 0) { //controller is connected (must receive controller number)
                 receiving = false;
                 System.out.println("Checked successfully");
+                errorId = 1;
                 return;
             }
+            if(errors.contains(convertReceived(receivedMessage))) {
+                errorId = errors.indexOf(convertReceived(receivedMessage)) + 1;
+                return;
+            }
+
 
             //reaction on messages
             if (receivedMessage.get(0) && receivedMessage.get(1)) {
@@ -200,9 +205,8 @@ public class StationController {
             pin.low();
             sending = false;
             setInput();
-            if(message.equals(checkControllerMessage)) { //if checking for input then receive. else sending from application
-                receiveMessage();
-            }
+             //if checking for input then receive. else sending from application
+            receiveMessage();
         }
     }
 
