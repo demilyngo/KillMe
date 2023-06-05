@@ -84,8 +84,6 @@
 </div>
 <script>
     document.querySelector(".modal-click").disabled = true;
-    document.querySelector("#startButton").disabled = true;
-    document.querySelector("#restartButton").disabled = true;
     //ORDER OF WAGONS
     function showValues() {
         var str = $( "form" ).serializeArray();
@@ -105,9 +103,7 @@
         $(".state").text("Состояние: Прибытие");
 
         document.querySelector("#waitButton").style.display = "none";
-        document.querySelector("#waitButton").disabled = true;
         document.querySelector("#startButton").style.display = "block";
-        document.querySelector("#startButton").disabled = false;
 
         if (window.EventSource == null) {
             alert('The browser does not support Server-Sent Events');
@@ -181,9 +177,7 @@
                         $(".modal-click").modal({fadeDuration: 250});
                         eventSource.close();
                         document.querySelector("#startButton").style.display = "none";
-                        document.querySelector("#startButton").disabled = true;
                         document.querySelector("#restartButton").style.display = "block";
-                        document.querySelector("#restartButton").disabled = false;
                         break;
                 }
             };

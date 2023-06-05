@@ -101,6 +101,7 @@ body {
 }
 .bottomRight a {
     margin: auto 0;
+    text-decoration: none;
 }
 
 .bottomRight button:hover {
