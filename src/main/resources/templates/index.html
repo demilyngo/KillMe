@@ -81,7 +81,7 @@
     <p style="display: none"><a href="#ex1" class="modal-click">Open Modal</a></p>
 </div>
 <script>
-    $(".modal-click").disable();
+    document.querySelector(".modal-click").disabled = true
     //ORDER OF WAGONS
     function showValues() {
         var str = $( "form" ).serializeArray();
