@@ -99,6 +99,9 @@ body {
     margin: auto 0;
     border-radius: 20px;
 }
+.bottomRight a {
+    margin: auto 0;
+}
 
 .bottomRight button:hover {
     background-color: #cccccc;
