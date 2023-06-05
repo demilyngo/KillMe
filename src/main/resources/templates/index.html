@@ -66,8 +66,10 @@
             <div>Ожидают сортировку: <span id="toSortCounter"></span></div>
             <img class="map" src="../images/Screenshot_1.jpg" alt="Тут должна быть карта">
             <div class="bottomRight">
-                <button id="startButton">Начать сортировку</button>
                 <button id="waitButton">Ожидание</button>
+                <button id="startButton" style="display: none">Начать сортировку</button>
+                <button id="restartButton" style="display: none">Перезапустить</button>
+                <button id="alarmButton" style="background-color: orangered">Авария</button>
                 <p th:text="${station.getControl().displayValue}"></p>
             </div>
         </div>
