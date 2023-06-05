@@ -181,7 +181,7 @@ body {
 
 #overlay {
     display: none;
-    z-index: 99;
+    z-index: 2;
     width: inherit;
     height: inherit;
     position: absolute;

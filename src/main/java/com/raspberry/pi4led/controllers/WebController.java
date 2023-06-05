@@ -51,21 +51,22 @@ public class WebController {
         cachedThreadPool.execute(() -> {
             try {
                 for(char way : order.toCharArray()) {
-                    way+=1;
+                    way += 1;
                     System.out.println("SEMAPHORE " + way);
                     stationController.sendMessage(256 + 2 * way); //message to change semaphores
                     stationController.sendMessage(320 + 2 * way); //message to change arrows
+                    eventBuilder.id("1").data("Screenshot_" + way).build();
+                    emitter.send(eventBuilder);
                     if (stationController.getErrorId() != 0) {
-                        eventBuilder.id("3").data(stationController.getErrorId());
+                        eventBuilder.id("3").data(stationController.getErrorId()); //to open modal with error
                         emitter.send(eventBuilder);
-                    }
-                    else {
-                        eventBuilder.id("1").data("Screenshot_" + way).build();
-                        emitter.send(eventBuilder);
+                        break;
                     }
                 }
-                eventBuilder.id("2").data("Done sorting").build();
-                emitter.send(eventBuilder);
+                if(stationController.getErrorId() == 0) {
+                    eventBuilder.id("2").data("Done sorting").build();
+                    emitter.send(eventBuilder);
+                }
             } catch (Exception e) {
                 emitter.completeWithError(e);
             }
