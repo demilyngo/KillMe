@@ -8,10 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -101,7 +98,16 @@ public class StationController {
         if (!sending && !receiving) {
             receivedMessage.clear();
             receiving = true;
-            for (int i=0; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
+            long startTime = System.currentTimeMillis();
+            while (pin.isLow()) {
+                if(System.currentTimeMillis() - startTime > 5000) {
+                    errorId = checkControllerMessage/32 - 3;
+                    return;
+                }
+                Thread.onSpinWait();
+            }
+            receivedMessage.set(0);
+            for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
                 if (pin.isHigh()) {
                     receivedMessage.set(i);
                 } else {
@@ -116,6 +122,7 @@ public class StationController {
                 System.out.println("Checked successfully");
                 return;
             }
+            
             if(errors.contains(convertReceived(receivedMessage))) {
                 errorId = errors.indexOf(convertReceived(receivedMessage)) + 1;
                 return;
