@@ -119,7 +119,7 @@ public class StationController {
                 Thread.sleep(100);
             }
 
-            if (Objects.equals(convertReceived(receivedMessage), checkControllerMessage)) { //controller is connected (must receive controller number)
+            if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected (must receive controller number)
                 receiving = false;
                 System.out.println("Checked successfully");
                 return;
@@ -228,23 +228,23 @@ public class StationController {
         return value;
     }
 
-//    public static String convertToBitSet(Integer message) {
-//        StringBuilder resMessage = new StringBuilder();
-//        int pos = startBitLength+startBitLength+controllerLength+taskLength - Integer.toBinaryString(message).length();
-//        for(int i = 0; i!=startBitLength+startBitLength+controllerLength+taskLength - Integer.toBinaryString(message).length(); i++) {
-//            resMessage.append("0");
-//        }
-//        for(char bit : Integer.toBinaryString(message).toCharArray()) {
-//            if(bit == '1') {
-//                resMessage.append("1");
-//            }
-//            else {
-//                resMessage.append("0");
-//            }
-//            pos++;
-//        }
-//        return resMessage.toString();
-//    }
+    public static String convertToBitSet(Integer message) {
+        StringBuilder resMessage = new StringBuilder();
+        int pos = startBitLength+startBitLength+controllerLength+taskLength - Integer.toBinaryString(message).length();
+        for(int i = 0; i!=startBitLength+startBitLength+controllerLength+taskLength - Integer.toBinaryString(message).length(); i++) {
+            resMessage.append("0");
+        }
+        for(char bit : Integer.toBinaryString(message).toCharArray()) {
+            if(bit == '1') {
+                resMessage.append("1");
+            }
+            else {
+                resMessage.append("0");
+            }
+            pos++;
+        }
+        return resMessage.toString();
+    }
 
 
     public void setInput() {
