@@ -49,13 +49,12 @@ public class WebController {
             cachedThreadPool.execute(() -> {
                 try {
                     emitter.send("inWaiting");
-                    stationController.sendMessage(334); //moving to position for sorting
+                    stationController.sendMessage(142); //moving to position for sorting
 //                    while (StationController.convertReceived(stationController.getReceivedMessage()) != 398
 //                            || StationController.convertReceived(stationController.getReceivedMessage()) != 400) {
 //                        Thread.onSpinWait();
 //                    }
-                    if (StationController.convertReceived(stationController.getReceivedMessage()) == 398) {
-                        stationController.setTrainCounter(stationController.getTrainCounter() + 1);
+                    if (StationController.convertReceived(stationController.getReceivedMessage()) == 206) {
                         eventBuilder.id("1").data(stationController.getTrainCounter()).build();
                         emitter.send(eventBuilder);
                     } else {
@@ -85,8 +84,8 @@ public class WebController {
                 for(char way : order.toCharArray()) {
                     way += 1;
                     System.out.println("SEMAPHORE " + way);
-                    stationController.sendMessage(256 + 2 * way); //message to change semaphores
-                    stationController.sendMessage(320 + 2 * way); //message to change arrows
+                    stationController.sendMessage(160 + 2 * way); //message to change semaphores
+                    stationController.sendMessage(130 + 2 * way); //message to change arrows
                     eventBuilder.id("1").data("Screenshot_" + way).build();
                     emitter.send(eventBuilder);
                     if (stationController.getErrorId() != 0) {

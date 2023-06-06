@@ -145,40 +145,40 @@ public class StationController {
                 if (convertReceived(receivedMessage) > 224) { //stand buttons
                     switch (convertReceived(receivedMessage)) {
                         case 226 -> {
-                            sendMessage(258); //semaphore way 1
-                            sendMessage(322); //rails way 1
+                            sendMessage(162); //semaphore way 1
+                            sendMessage(130); //rails way 1
                             currentWay = 1;
                         }
                         case 228 -> {
-                            sendMessage(260); //semaphore way 2
-                            sendMessage(324); //rails way 2
+                            sendMessage(164); //semaphore way 2
+                            sendMessage(132); //rails way 2
                             currentWay = 2;
                         }
                         case 230 -> {
-                            sendMessage(262); //semaphore way 3
-                            sendMessage(326); //rails way 3
+                            sendMessage(166); //semaphore way 3
+                            sendMessage(134); //rails way 3
                             currentWay = 3;
                         }
                         case 232 -> {
-                            sendMessage(264); //semaphore way 4
-                            sendMessage(328); //rails way 4
+                            sendMessage(168); //semaphore way 4
+                            sendMessage(134); //rails way 4
                             currentWay = 4;
                         }
                         case 234 -> {
-                            sendMessage(266); //semaphore way 5
-                            sendMessage(330); //rails way 5
+                            sendMessage(170); //semaphore way 5
+                            sendMessage(136); //rails way 5
                             currentWay = 5;
                         }
                         case 236 -> {
-                            sendMessage(268); //semaphore way 6
-                            sendMessage(332); //rails way 6
+                            sendMessage(172); //semaphore way 6
+                            sendMessage(138); //rails way 6
                             currentWay = 6;
                         }
                         case 238 -> {
-                            sendMessage(270); //toggle lights
+                            sendMessage(142); //to vitazhnoy put
                         }
                         case 240 -> {
-                            sendMessage(346);//start moving
+                            sendMessage(144);//to depo
                         }
                     }
                 }
@@ -196,12 +196,12 @@ public class StationController {
                 if (bit == '1') {
                     pin.high();
                     System.out.println("Sent: " + bit);
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                     continue;
                 }
                 pin.low();
                 System.out.println("Sent: " + bit);
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
             pin.low();
             sending = false;
