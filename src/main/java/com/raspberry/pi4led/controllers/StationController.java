@@ -49,12 +49,12 @@ public class StationController {
     private static final int controllerLength = 2;
     private static final int taskLength = 4;
 
-    private Integer checkController1 = 256;
-    private Integer checkController2 = 320;
-    private Integer checkController3 = 384;
-    private Integer checkController4 = 448;
+    private Integer checkController1 = 128;
+    private Integer checkController2 = 160;
+    private Integer checkController3 = 192;
+    private Integer checkController4 = 224;
     private Integer checkControllerMessage;
-    private ArrayList<Integer> errors = new ArrayList<Integer>(Arrays.asList(318, 382, 446, 510));
+    private ArrayList<Integer> errors = new ArrayList<Integer>(Arrays.asList(158, 190, 222, 254));
     private int errorId = 0;
 
     private State state;
@@ -108,7 +108,7 @@ public class StationController {
                     receivedMessage.clear(i); ///CHECK STOP BIT ingore
                 }
                 System.out.println("Received: " + receivedMessage.get(i));
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
 
             if (Objects.equals(convertReceived(receivedMessage), checkControllerMessage)) { //controller is connected (must receive controller number)
@@ -124,7 +124,7 @@ public class StationController {
 
             //reaction on messages
             if (receivedMessage.get(0) && receivedMessage.get(1)) {
-                if (convertReceived(receivedMessage) == 400) {
+                if (convertReceived(receivedMessage) == 206) {
                     //sensors
                     if (this.state == State.WAITING) {
                         trainCounter++;
@@ -134,7 +134,7 @@ public class StationController {
                         trainCounter--;
                     }
                 }
-                if(convertReceived(receivedMessage) >= 386) {
+                else if (convertReceived(receivedMessage) >= 194 && convertReceived(receivedMessage) <= 204) {
                     sortedTrainCounter ++;
                     trainCounter --;
                 }
@@ -142,42 +142,42 @@ public class StationController {
                 return;
             }
             if (getControl() == Control.FIELD) {
-                if (convertReceived(receivedMessage) > 448) { //stand buttons
+                if (convertReceived(receivedMessage) > 224) { //stand buttons
                     switch (convertReceived(receivedMessage)) {
-                        case 450 -> {
+                        case 226 -> {
                             sendMessage(258); //semaphore way 1
                             sendMessage(322); //rails way 1
                             currentWay = 1;
                         }
-                        case 452 -> {
+                        case 228 -> {
                             sendMessage(260); //semaphore way 2
                             sendMessage(324); //rails way 2
                             currentWay = 2;
                         }
-                        case 454 -> {
+                        case 230 -> {
                             sendMessage(262); //semaphore way 3
                             sendMessage(326); //rails way 3
                             currentWay = 3;
                         }
-                        case 456 -> {
+                        case 232 -> {
                             sendMessage(264); //semaphore way 4
                             sendMessage(328); //rails way 4
                             currentWay = 4;
                         }
-                        case 458 -> {
+                        case 234 -> {
                             sendMessage(266); //semaphore way 5
                             sendMessage(330); //rails way 5
                             currentWay = 5;
                         }
-                        case 460 -> {
+                        case 236 -> {
                             sendMessage(268); //semaphore way 6
                             sendMessage(332); //rails way 6
                             currentWay = 6;
                         }
-                        case 462 -> {
+                        case 238 -> {
                             sendMessage(270); //toggle lights
                         }
-                        case 464 -> {
+                        case 240 -> {
                             sendMessage(346);//start moving
                         }
                     }
