@@ -111,10 +111,9 @@ public class StationController {
                 Thread.sleep(100);
             }
 
-            if (convertReceived(receivedMessage) == 0) { //controller is connected (must receive controller number)
+            if (Objects.equals(convertReceived(receivedMessage), checkControllerMessage)) { //controller is connected (must receive controller number)
                 receiving = false;
                 System.out.println("Checked successfully");
-                errorId = 1;
                 return;
             }
             if(errors.contains(convertReceived(receivedMessage))) {
