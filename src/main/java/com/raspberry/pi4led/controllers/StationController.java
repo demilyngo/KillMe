@@ -107,6 +107,8 @@ public class StationController {
                 Thread.onSpinWait();
             }
             receivedMessage.set(0);
+            System.out.println("Received: " + receivedMessage.get(0));
+            Thread.sleep(1000);
             for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
                 if (pin.isHigh()) {
                     receivedMessage.set(i);
