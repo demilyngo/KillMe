@@ -77,9 +77,9 @@ public class StationController {
                 checkControllerMessage = checkController2;
                 System.out.println("I check 2");
                 sendMessage(checkControllerMessage);
-                checkControllerMessage = checkController3;
-                System.out.println("I check 3");
-                sendMessage(checkControllerMessage);
+//                checkControllerMessage = checkController3;
+//                System.out.println("I check 3");
+//                sendMessage(checkControllerMessage);
                 if(getControl() == Control.FIELD) {
                     System.out.println("I check 4");
                     checkControllerMessage = checkController4;
@@ -98,14 +98,14 @@ public class StationController {
         if (!sending && !receiving) {
             receivedMessage.clear();
             receiving = true;
-            long startTime = System.currentTimeMillis();
-            while (pin.isLow()) {
-                if(System.currentTimeMillis() - startTime > 5000) {
-                    errorId = checkControllerMessage/32 - 3;
-                    return;
-                }
-                Thread.onSpinWait();
-            }
+//            long startTime = System.currentTimeMillis();
+//            while (pin.isLow()) {
+//                if(System.currentTimeMillis() - startTime > 5000) {
+//                    errorId = checkControllerMessage/32 - 3;
+//                    return;
+//                }
+//                Thread.onSpinWait();
+//            }
             receivedMessage.set(0);
             for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
                 if (pin.isHigh()) {
@@ -122,7 +122,7 @@ public class StationController {
                 System.out.println("Checked successfully");
                 return;
             }
-            
+
             if(errors.contains(convertReceived(receivedMessage))) {
                 errorId = errors.indexOf(convertReceived(receivedMessage)) + 1;
                 return;
