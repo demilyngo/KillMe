@@ -99,17 +99,17 @@ public class StationController {
             receivedMessage.clear();
             receiving = true;
             long startTime = System.currentTimeMillis();
-            while (pin.isLow()) {
-//                if(System.currentTimeMillis() - startTime > 5000) {
-//                    //errorId = checkControllerMessage/32 - 3;
-//                    return;
-//                }
-                Thread.onSpinWait();
-            }
-            receivedMessage.set(0);
-            System.out.println("Received: " + receivedMessage.get(0));
-            Thread.sleep(100);
-            for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
+//            while (pin.isLow()) {
+////                if(System.currentTimeMillis() - startTime > 5000) {
+////                    //errorId = checkControllerMessage/32 - 3;
+////                    return;
+////                }
+//                Thread.onSpinWait();
+//            }
+//            receivedMessage.set(0);
+//            System.out.println("Received: " + receivedMessage.get(0));
+            Thread.sleep(1000);
+            for (int i=0; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
                 if (pin.isHigh()) {
                     receivedMessage.set(i);
                 } else {
