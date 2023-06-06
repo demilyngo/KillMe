@@ -106,8 +106,8 @@ public class StationController {
 //                }
 //                Thread.onSpinWait();
 //            }
-            receivedMessage.set(0);
-            for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
+            //receivedMessage.set(0);
+            for (int i=0; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
                 if (pin.isHigh()) {
                     receivedMessage.set(i);
                 } else {
