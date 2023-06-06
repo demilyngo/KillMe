@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 
 @Controller
 public class WebController {
-    final StationController stationController = new StationController(State.WAITING, Control.SERVER, 3, "Сургутская");
+    final StationController stationController = new StationController(State.WAITING, Control.FIELD, 3, "Сургутская");
 
     @GetMapping("/")
     public String greeting(Model model) throws InterruptedException {
