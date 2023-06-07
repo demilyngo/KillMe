@@ -98,7 +98,7 @@ public class StationController {
         if (!sending && !receiving) {
             receivedMessage.clear();
             receiving = true;
-            Thread.sleep(1000);
+
             long startTime = System.currentTimeMillis();
             while (pin.isLow()) {
                 if(System.currentTimeMillis() - startTime > 5000) {
@@ -109,7 +109,7 @@ public class StationController {
             }
             receivedMessage.set(0);
             System.out.println("Received: " + receivedMessage.get(0));
-
+            Thread.sleep(1000);
             for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
                 if (pin.isHigh()) {
                     receivedMessage.set(i);
