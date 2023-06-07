@@ -74,17 +74,21 @@ public class StationController {
                 checkControllerMessage = checkController1;
                 System.out.println("I check 1");
                 sendMessage(checkControllerMessage);
+                Thread.sleep(1000);
                 checkControllerMessage = checkController2;
                 System.out.println("I check 2");
                 sendMessage(checkControllerMessage);
-//                checkControllerMessage = checkController3;
-//                System.out.println("I check 3");
-//                sendMessage(checkControllerMessage);
-//                if(getControl() == Control.FIELD) {
-//                    System.out.println("I check 4");
-//                    checkControllerMessage = checkController4;
-//                    sendMessage(checkControllerMessage);
-//                }
+                Thread.sleep(1000);
+                checkControllerMessage = checkController3;
+                System.out.println("I check 3");
+                sendMessage(checkControllerMessage);
+                Thread.sleep(1000);
+                if(getControl() == Control.FIELD) {
+                    System.out.println("I check 4");
+                    checkControllerMessage = checkController4;
+                    sendMessage(checkControllerMessage);
+                    Thread.sleep(1000);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -201,7 +205,6 @@ public class StationController {
     }
     ///////////////////////////////////////
     public synchronized void sendMessage(Integer message) throws InterruptedException {
-        Thread.sleep(1000);
         if (!receiving && !sending) {
             setOutput();
             sending = true;
