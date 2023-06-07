@@ -74,17 +74,17 @@ public class StationController {
                 checkControllerMessage = checkController1;
                 System.out.println("I check 1");
                 sendMessage(checkControllerMessage);
-                checkControllerMessage = checkController2;
-                System.out.println("I check 2");
-                sendMessage(checkControllerMessage);
-                checkControllerMessage = checkController3;
-                System.out.println("I check 3");
-                sendMessage(checkControllerMessage);
-                if(getControl() == Control.FIELD) {
-                    System.out.println("I check 4");
-                    checkControllerMessage = checkController4;
-                    sendMessage(checkControllerMessage);
-                }
+//                checkControllerMessage = checkController2;
+//                System.out.println("I check 2");
+//                sendMessage(checkControllerMessage);
+//                checkControllerMessage = checkController3;
+//                System.out.println("I check 3");
+//                sendMessage(checkControllerMessage);
+//                if(getControl() == Control.FIELD) {
+//                    System.out.println("I check 4");
+//                    checkControllerMessage = checkController4;
+//                    sendMessage(checkControllerMessage);
+//                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -98,18 +98,19 @@ public class StationController {
         if (!sending && !receiving) {
             receivedMessage.clear();
             receiving = true;
-//            long startTime = System.currentTimeMillis();
-//            while (pin.isLow()) {
-////                if(System.currentTimeMillis() - startTime > 5000) {
-////                    //errorId = checkControllerMessage/32 - 3;
-////                    return;
-////                }
-//                Thread.onSpinWait();
-//            }
-//            receivedMessage.set(0);
-//            System.out.println("Received: " + receivedMessage.get(0));
             Thread.sleep(1000);
-            for (int i=0; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
+            //long startTime = System.currentTimeMillis();
+            while (pin.isLow()) {
+//                if(System.currentTimeMillis() - startTime > 5000) {
+//                    //errorId = checkControllerMessage/32 - 3;
+//                    return;
+//                }
+                Thread.onSpinWait();
+            }
+            receivedMessage.set(0);
+            System.out.println("Received: " + receivedMessage.get(0));
+
+            for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
                 if (pin.isHigh()) {
                     receivedMessage.set(i);
                 } else {
