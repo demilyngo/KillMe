@@ -209,7 +209,7 @@ public class StationController {
             setOutput();
             sending = true;
             BitSet messageBitSet = convertToBitSet(message);
-            for (int i = 7; i!=-1; i--) { //Integer.toBinaryString(message).toCharArray()
+            for (int i = 0; i!=8; i++) { //Integer.toBinaryString(message).toCharArray()
                 if (messageBitSet.get(i)) {
                     pin.high();
                     System.out.println("Sent: " + messageBitSet.get(i));
@@ -238,9 +238,13 @@ public class StationController {
 
     public static BitSet convertToBitSet(Integer message) {
         BitSet resMessage = new BitSet(8);
-        int pos = 7;
+        int pos = 0;
         //StringBuilder resMessage = new StringBuilder();
         System.out.println(Integer.toBinaryString(message));
+        for (int i = 0; i!= 8-Integer.toBinaryString(message).length(); i++) {
+            resMessage.clear(pos);
+            pos++;
+        }
         for(char bit : Integer.toBinaryString(message).toCharArray()) {
             if(bit == '1') {
                 resMessage.set(pos);
