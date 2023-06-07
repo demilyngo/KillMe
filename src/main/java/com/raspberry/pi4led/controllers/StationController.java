@@ -74,9 +74,9 @@ public class StationController {
                 checkControllerMessage = checkController1;
                 System.out.println("I check 1");
                 sendMessage(checkControllerMessage);
-//                checkControllerMessage = checkController2;
-//                System.out.println("I check 2");
-//                sendMessage(checkControllerMessage);
+                checkControllerMessage = checkController2;
+                System.out.println("I check 2");
+                sendMessage(checkControllerMessage);
 //                checkControllerMessage = checkController3;
 //                System.out.println("I check 3");
 //                sendMessage(checkControllerMessage);
