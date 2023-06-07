@@ -205,15 +205,16 @@ public class StationController {
             setOutput();
             pin.high();
             sending = true;
-            for (char bit : Integer.toBinaryString(message).toCharArray()) { //Integer.toBinaryString(message).toCharArray()
-                if (bit == '1') {
+            BitSet messageBitSet = convertToBitSet(message);
+            for (int i = 0; i!=8; i++) { //Integer.toBinaryString(message).toCharArray()
+                if (messageBitSet.get(i)) {
                     pin.high();
-                    System.out.println("Sent: " + bit);
+                    System.out.println("Sent: " + messageBitSet.get(i));
                     Thread.sleep(250);
                     continue;
                 }
                 pin.low();
-                System.out.println("Sent: " + bit);
+                System.out.println("Sent: " + messageBitSet.get(i));
                 Thread.sleep(250);
             }
             pin.high();
@@ -232,17 +233,20 @@ public class StationController {
         return value;
     }
 
-    public static String convertToBitSet(Integer message) {
-        StringBuilder resMessage = new StringBuilder();
+    public static BitSet convertToBitSet(Integer message) {
+        BitSet qwe = new BitSet(8);
+        int pos = 7;
+        //StringBuilder resMessage = new StringBuilder();
         for(char bit : Integer.toBinaryString(message).toCharArray()) {
             if(bit == '1') {
-                resMessage.append("1");
+                qwe.set(pos);
             }
             else {
-                resMessage.append("0");
+                qwe.clear(pos);
             }
+            pos--;
         }
-        return resMessage.toString();
+        return qwe;
     }
 
 
