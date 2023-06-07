@@ -201,9 +201,9 @@ public class StationController {
     }
     ///////////////////////////////////////
     public synchronized void sendMessage(Integer message) throws InterruptedException {
+        Thread.sleep(1000);
         if (!receiving && !sending) {
             setOutput();
-            pin.high();
             sending = true;
             BitSet messageBitSet = convertToBitSet(message);
             for (int i = 0; i!=8; i++) { //Integer.toBinaryString(message).toCharArray()
@@ -234,19 +234,19 @@ public class StationController {
     }
 
     public static BitSet convertToBitSet(Integer message) {
-        BitSet qwe = new BitSet(8);
+        BitSet resMessage = new BitSet(8);
         int pos = 7;
         //StringBuilder resMessage = new StringBuilder();
         for(char bit : Integer.toBinaryString(message).toCharArray()) {
             if(bit == '1') {
-                qwe.set(pos);
+                resMessage.set(pos);
             }
             else {
-                qwe.clear(pos);
+                resMessage.clear(pos);
             }
             pos--;
         }
-        return qwe;
+        return resMessage;
     }
 
 
