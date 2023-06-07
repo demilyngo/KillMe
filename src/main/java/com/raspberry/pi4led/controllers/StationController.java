@@ -46,8 +46,8 @@ public class StationController {
     private static final int controllerLength = 2;
     private static final int taskLength = 4;
 
-    private Integer checkController1 = 128;
-    private Integer checkController2 = 160;
+    private Integer checkController1 = 1; //128
+    private Integer checkController2 = 33; // 160
     private Integer checkController3 = 192;
     private Integer checkController4 = 224;
     private Integer checkControllerMessage;
@@ -207,12 +207,12 @@ public class StationController {
             sending = true;
             for (char bit : Integer.toBinaryString(message).toCharArray()) { //Integer.toBinaryString(message).toCharArray()
                 if (bit == '1') {
-                    pin.low();
+                    pin.high();
                     System.out.println("Sent: " + bit);
                     Thread.sleep(250);
                     continue;
                 }
-                pin.high();
+                pin.low();
                 System.out.println("Sent: " + bit);
                 Thread.sleep(250);
             }
