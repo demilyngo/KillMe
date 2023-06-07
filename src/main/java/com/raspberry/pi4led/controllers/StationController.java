@@ -240,6 +240,7 @@ public class StationController {
         BitSet resMessage = new BitSet(8);
         int pos = 7;
         //StringBuilder resMessage = new StringBuilder();
+        System.out.println(Integer.toBinaryString(message));
         for(char bit : Integer.toBinaryString(message).toCharArray()) {
             if(bit == '1') {
                 resMessage.set(pos);
