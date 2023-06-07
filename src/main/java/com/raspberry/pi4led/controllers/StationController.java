@@ -100,7 +100,7 @@ public class StationController {
             receiving = true;
 
             long startTime = System.currentTimeMillis();
-            while (pin.isLow()) {
+            while (pin.isHigh()) {
                 if(System.currentTimeMillis() - startTime > 5000) {
                     //errorId = checkControllerMessage/32 - 3;
                     receiving = false;
@@ -108,14 +108,14 @@ public class StationController {
                 }
                 Thread.onSpinWait();
             }
-            receivedMessage.set(0);
+            receivedMessage.clear(0);
             System.out.println("Received: " + receivedMessage.get(0));
             Thread.sleep(250);
             for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
-                if (pin.isHigh()) {
-                    receivedMessage.set(i);
+                if (pin.isLow()) {
+                    receivedMessage.clear(i);
                 } else {
-                    receivedMessage.clear(i); ///CHECK STOP BIT ingore
+                    receivedMessage.set(i); ///CHECK STOP BIT ingore
                 }
                 System.out.println("Received: " + receivedMessage.get(i));
                 Thread.sleep(250);
@@ -203,20 +203,20 @@ public class StationController {
     public synchronized void sendMessage(Integer message) throws InterruptedException {
         if (!receiving && !sending) {
             setOutput();
-            pin.low();
+            pin.high();
             sending = true;
             for (char bit : Integer.toBinaryString(message).toCharArray()) { //Integer.toBinaryString(message).toCharArray()
                 if (bit == '1') {
-                    pin.high();
+                    pin.low();
                     System.out.println("Sent: " + bit);
                     Thread.sleep(250);
                     continue;
                 }
-                pin.low();
+                pin.high();
                 System.out.println("Sent: " + bit);
                 Thread.sleep(250);
             }
-            pin.low();
+            pin.high();
             sending = false;
             setInput();
             //if checking for input then receive. else sending from application
