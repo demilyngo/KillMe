@@ -103,7 +103,8 @@ public class StationController {
             while (pin.isLow()) {
                 if(System.currentTimeMillis() - startTime > 5000) {
                     //errorId = checkControllerMessage/32 - 3;
-                    break;
+                    receiving = false;
+                    return;
                 }
                 Thread.onSpinWait();
             }
