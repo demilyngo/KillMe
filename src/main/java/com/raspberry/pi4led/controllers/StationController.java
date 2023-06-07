@@ -48,8 +48,8 @@ public class StationController {
 
     private Integer checkController1 = 1; //128
     private Integer checkController2 = 33; // 160
-    private Integer checkController3 = 192;
-    private Integer checkController4 = 224;
+    private Integer checkController3 = 65; //192
+    private Integer checkController4 = 97; //224
     private Integer checkControllerMessage;
     private ArrayList<Integer> errors = new ArrayList<Integer>(Arrays.asList(158, 190, 222, 254));
     private int errorId = 0;
