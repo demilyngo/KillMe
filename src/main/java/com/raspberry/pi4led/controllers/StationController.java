@@ -240,7 +240,7 @@ public class StationController {
         BitSet resMessage = new BitSet(8);
         int pos = 0;
         //StringBuilder resMessage = new StringBuilder();
-        System.out.println(Integer.toBinaryString(message));
+        System.out.println(Integer.toBinaryString(message).length());
         for (int i = 0; i!= 8-Integer.toBinaryString(message).length(); i++) {
             resMessage.clear(pos);
             pos++;
@@ -252,7 +252,7 @@ public class StationController {
             else {
                 resMessage.clear(pos);
             }
-            pos--;
+            pos++;
         }
         return resMessage;
     }
