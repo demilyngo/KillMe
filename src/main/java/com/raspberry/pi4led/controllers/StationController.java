@@ -110,7 +110,7 @@ public class StationController {
             }
             receivedMessage.set(0);
             System.out.println("Received: " + receivedMessage.get(0));
-            Thread.sleep(1000);
+            Thread.sleep(500);
             for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
                 if (pin.isHigh()) {
                     receivedMessage.set(i);
@@ -118,7 +118,7 @@ public class StationController {
                     receivedMessage.clear(i); ///CHECK STOP BIT ingore
                 }
                 System.out.println("Received: " + receivedMessage.get(i));
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
 
             System.out.println(convertReceived(receivedMessage));
@@ -209,12 +209,12 @@ public class StationController {
                 if (bit == '1') {
                     pin.high();
                     System.out.println("Sent: " + bit);
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                     continue;
                 }
                 pin.low();
                 System.out.println("Sent: " + bit);
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
             pin.low();
             sending = false;
