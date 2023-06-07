@@ -47,18 +47,15 @@ public class WebController {
                 try {
                     emitter.send("inWaiting");
                     stationController.sendMessage(142); //moving to position for sorting
-//                    while (StationController.convertReceived(stationController.getReceivedMessage()) != 398
-//                            || StationController.convertReceived(stationController.getReceivedMessage()) != 400) {
-//                        Thread.onSpinWait();
-//                    }
-                    if (StationController.convertReceived(stationController.getReceivedMessage()) == 206) {
-                        eventBuilder.id("1").data(stationController.getTrainCounter()).build();
-                        emitter.send(eventBuilder);
-                    } else {
-                        stationController.setState(State.READY);
-                        eventBuilder.id("2").data("Ready to sort").build();
-                        emitter.send(eventBuilder);
+                    while (StationController.convertReceived(stationController.getReceivedMessage()) != 208) {
+                        if (StationController.convertReceived(stationController.getReceivedMessage()) == 206) {
+                            eventBuilder.id("1").data(stationController.getTrainCounter()).build();
+                            emitter.send(eventBuilder);
+                        }
                     }
+                    stationController.setState(State.READY);
+                    eventBuilder.id("2").data("Ready to sort").build();
+                    emitter.send(eventBuilder);
                 } catch (InterruptedException | IOException e) {
                     e.printStackTrace();
                 }
@@ -91,10 +88,8 @@ public class WebController {
                         break;
                     }
                 }
-                if(stationController.getErrorId() == 0) {
-                    eventBuilder.id("2").data("Done sorting").build();
-                    emitter.send(eventBuilder);
-                }
+                eventBuilder.id("2").data("Done sorting").build();
+                emitter.send(eventBuilder);
             } catch (Exception e) {
                 emitter.completeWithError(e);
             }

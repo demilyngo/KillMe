@@ -98,7 +98,7 @@ public class StationController {
         if (!sending && !receiving) {
             receivedMessage.clear();
             receiving = true;
-            long startTime = System.currentTimeMillis();
+//            long startTime = System.currentTimeMillis();
 //            while (pin.isLow()) {
 ////                if(System.currentTimeMillis() - startTime > 5000) {
 ////                    //errorId = checkControllerMessage/32 - 3;
@@ -116,9 +116,11 @@ public class StationController {
                     receivedMessage.clear(i); ///CHECK STOP BIT ingore
                 }
                 System.out.println("Received: " + receivedMessage.get(i));
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
 
+            System.out.println(convertReceived(receivedMessage));
+            System.out.println(checkControllerMessage);
             if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected (must receive controller number)
                 receiving = false;
                 System.out.println("Checked successfully");
@@ -205,17 +207,17 @@ public class StationController {
                 if (bit == '1') {
                     pin.high();
                     System.out.println("Sent: " + bit);
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                     continue;
                 }
                 pin.low();
                 System.out.println("Sent: " + bit);
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
             pin.low();
             sending = false;
             setInput();
-             //if checking for input then receive. else sending from application
+            //if checking for input then receive. else sending from application
             receiveMessage();
         }
     }
@@ -230,10 +232,6 @@ public class StationController {
 
     public static String convertToBitSet(Integer message) {
         StringBuilder resMessage = new StringBuilder();
-        int pos = startBitLength+startBitLength+controllerLength+taskLength - Integer.toBinaryString(message).length();
-        for(int i = 0; i!=startBitLength+startBitLength+controllerLength+taskLength - Integer.toBinaryString(message).length(); i++) {
-            resMessage.append("0");
-        }
         for(char bit : Integer.toBinaryString(message).toCharArray()) {
             if(bit == '1') {
                 resMessage.append("1");
@@ -241,7 +239,6 @@ public class StationController {
             else {
                 resMessage.append("0");
             }
-            pos++;
         }
         return resMessage.toString();
     }
