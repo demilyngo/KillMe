@@ -49,19 +49,23 @@ public class StationModel {
     Runnable listener = () -> {
         while (!receiving && !sending && !connectionErrorIds.contains(errorId)) {
             try {
-                for (int i = 1; i!= 2; i++) { /////////////
+                for (int i = 1; i!= 3; i++) { /////////////
                     int j = 0;
                     do { //repeat if didnt receive proper response
-                        checkControllerMessage = checkControllerMessages.get(i);
-                        System.out.println("I check " + (i + 1));
-                        sendMessage(checkControllerMessage);
-                        Thread.sleep(5000);
+//                        checkControllerMessage = checkControllerMessages.get(i);
+//                        System.out.println("I check " + (i + 1));
+//                        sendMessage(checkControllerMessage);
+//                        Thread.sleep(5000);
                         int messageToSend = 35;
+                        int messageToReceive = 67;
                         for (int x =0; x!=6; x++) {
                             System.out.println("Semaphore " + (x+1));
                             sendMessage(messageToSend);
                             messageToSend+=2;
-                            Thread.sleep(6000);
+                            while(convertReceived(receivedMessage) != messageToReceive) {
+                                receiveMessage();
+                            }
+                            messageToReceive+=2;
                         }
                         //j++;
                     } while(true);
