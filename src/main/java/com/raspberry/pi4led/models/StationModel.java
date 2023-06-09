@@ -53,9 +53,9 @@ public class StationModel {
                     int j = 0;
                     do { //repeat if didnt receive proper response
                         checkControllerMessage = checkControllerMessages.get(i);
-                        System.out.println("I check " + i + 1);
+                        System.out.println("I check " + (i + 1));
                         sendMessage(checkControllerMessage);
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                         //j++;
                     } while(true);
                     //while(j != 3 && (convertReceived(receivedMessage) == 0 || convertReceived(receivedMessage) == 255) && errorId == 0)
@@ -154,7 +154,7 @@ public class StationModel {
                 }
                 else if (convertReceived(receivedMessage) >= 67 && convertReceived(receivedMessage) <= 77) {
                     sortedTrainCounter ++;
-                    System.out.println(sortedTrainCounter);
+                    System.out.println("Train counter: " + sortedTrainCounter);
                     trainCounter --;
                 }
                 receiving = false;
