@@ -49,13 +49,19 @@ public class StationModel {
     Runnable listener = () -> {
         while (!receiving && !sending && !connectionErrorIds.contains(errorId)) {
             try {
-                for (int i = 2; i!= 3; i++) { /////////////
+                for (int i = 0; i!= 1; i++) { /////////////
                     int j = 0;
                     do { //repeat if didnt receive proper response
                         checkControllerMessage = checkControllerMessages.get(i);
                         System.out.println("I check " + (i + 1));
                         sendMessage(checkControllerMessage);
-                        Thread.sleep(5000);
+                        Thread.sleep(3000);
+                        int messageToSend = 3;
+                        for (int x =0; x!=6; x++) {
+                            sendMessage(messageToSend);
+                            messageToSend+=2;
+                            Thread.sleep(6000);
+                        }
                         //j++;
                     } while(true);
                     //while(j != 3 && (convertReceived(receivedMessage) == 0 || convertReceived(receivedMessage) == 255) && errorId == 0)
@@ -126,8 +132,9 @@ public class StationModel {
                 Thread.sleep(10);
             }
 
-            System.out.println(convertReceived(receivedMessage));
-            System.out.println(checkControllerMessage);
+
+            System.out.println("I want: " + checkControllerMessage);
+            System.out.println("I received: " + convertReceived(receivedMessage));
             if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected (must receive controller number)
                 receiving = false;
                 System.out.println("Checked successfully");
