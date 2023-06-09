@@ -140,7 +140,7 @@ public class StationModel {
 
 
             //reaction on messages
-            if (receivedMessage.get(0) && receivedMessage.get(1)) {
+            if (!receivedMessage.get(0) && receivedMessage.get(1)) {
                 if (convertReceived(receivedMessage) == 79) {
                     //sensors
                     if (this.state == State.WAITING) {
@@ -153,6 +153,7 @@ public class StationModel {
                 }
                 else if (convertReceived(receivedMessage) >= 67 && convertReceived(receivedMessage) <= 77) {
                     sortedTrainCounter ++;
+                    System.out.println(sortedTrainCounter);
                     trainCounter --;
                 }
                 receiving = false;
