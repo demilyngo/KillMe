@@ -223,7 +223,7 @@ public class StationModel {
 
     public static Integer convertReceived(BitSet bits) {
         int value = 0;
-        for (int i = 0; i != bits.length(); i++) {
+        for (int i = bits.length(); i != 0; i--) {
             value += bits.get(i) ? (1 << i) : 0;
         }
         return value;
