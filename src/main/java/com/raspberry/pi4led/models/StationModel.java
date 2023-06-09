@@ -52,16 +52,18 @@ public class StationModel {
                 for (int i = 1; i!= 3; i++) { /////////////
                     int j = 0;
                     do { //repeat if didnt receive proper response
-//                        checkControllerMessage = checkControllerMessages.get(i);
-//                        System.out.println("I check " + (i + 1));
-//                        sendMessage(checkControllerMessage);
-//                        Thread.sleep(5000);
+                        checkControllerMessage = checkControllerMessages.get(i);
+                        System.out.println("I check " + (i + 1));
+                        sendMessage(checkControllerMessage);
+                        Thread.sleep(5000);
                         int messageToSend = 35;
                         int messageToReceive = 67;
                         for (int x =0; x!=6; x++) {
                             System.out.println("Semaphore " + (x+1));
                             sendMessage(messageToSend);
                             messageToSend+=2;
+                            System.out.println("I want: "+ messageToReceive);
+                            System.out.println("I received: " + convertReceived(receivedMessage));
                             while(convertReceived(receivedMessage) != messageToReceive) {
                                 receiveMessage();
                             }
@@ -138,8 +140,8 @@ public class StationModel {
             }
 
 
-            System.out.println("I want: " + checkControllerMessage);
-            System.out.println("I received: " + convertReceived(receivedMessage));
+//            System.out.println("I want: " + checkControllerMessage);
+//            System.out.println("I received: " + convertReceived(receivedMessage));
             if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected (must receive controller number)
                 receiving = false;
                 System.out.println("Checked successfully");
