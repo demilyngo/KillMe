@@ -56,12 +56,13 @@ public class StationModel {
                         System.out.println("I check " + i + 1);
                         sendMessage(checkControllerMessage);
                         Thread.sleep(1000);
-                        j++;
-                    } while(j != 3 && (convertReceived(receivedMessage) == 0 || convertReceived(receivedMessage) == 255) && errorId == 0);
-                    if (j == 3) {
-                        errorId = connectionErrorIds.get(i);
-                        break;
-                    }
+                        //j++;
+                    } while(true);
+                    //while(j != 3 && (convertReceived(receivedMessage) == 0 || convertReceived(receivedMessage) == 255) && errorId == 0)
+//                    if (j == 3) {
+//                        errorId = connectionErrorIds.get(i);
+//                        break;
+//                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
