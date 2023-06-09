@@ -223,8 +223,11 @@ public class StationModel {
 
     public static Integer convertReceived(BitSet bits) {
         int value = 0;
-        for (int i = bits.length(); i != 0; i--) {
-            value += bits.get(i) ? (1 << i) : 0;
+//        for (int i = bits.length(); i != 0; i--) {
+//            value += bits.get(i) ? (1 << i) : 0;
+//        }
+        for(int i = 0; i!= 8; i++) {
+            value += Math.pow(2,7-i);
         }
         return value;
     }
