@@ -49,15 +49,16 @@ public class StationModel {
     Runnable listener = () -> {
         while (!receiving && !sending && !connectionErrorIds.contains(errorId)) {
             try {
-                for (int i = 0; i!= 1; i++) { /////////////
+                for (int i = 1; i!= 2; i++) { /////////////
                     int j = 0;
                     do { //repeat if didnt receive proper response
                         checkControllerMessage = checkControllerMessages.get(i);
                         System.out.println("I check " + (i + 1));
                         sendMessage(checkControllerMessage);
-                        Thread.sleep(3000);
-                        int messageToSend = 3;
+                        Thread.sleep(5000);
+                        int messageToSend = 35;
                         for (int x =0; x!=6; x++) {
+                            System.out.println("Semaphore " + (x+1));
                             sendMessage(messageToSend);
                             messageToSend+=2;
                             Thread.sleep(6000);
