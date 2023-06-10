@@ -84,10 +84,12 @@ public class WebController {
                 for(char way : order.toCharArray()) {
                     System.out.println("Way before: " + way);
                     way += 1;
-                    System.out.println("SEMAPHORE " + way + " Message: " + 33 + (2 * Character.getNumericValue(way)));
-                    stationModel.sendMessage(33 + (2 * Character.getNumericValue(way))); //message to change semaphores
-                    System.out.println("ARROWS " + way + " Message: " + 1 + (2 * Character.getNumericValue(way)));
-                    stationModel.sendMessage(1 + 2 * Character.getNumericValue(way)); //message to change arrows
+                    int msgToSemaphore = 33 + (2 * Character.getNumericValue(way));
+                    System.out.println("SEMAPHORE " + way + " Message: " + msgToSemaphore);
+                    stationModel.sendMessage(msgToSemaphore); //message to change semaphores
+                    int msgToArrows = 1 + (2 * Character.getNumericValue(way));
+                    System.out.println("ARROWS " + way + " Message: " + msgToArrows);
+                    stationModel.sendMessage(msgToArrows); //message to change arrows
                     eventBuilder.id("1").data("Map_" + way).build();
                     emitter.send(eventBuilder);
                     if (stationModel.getErrorId() != 0) {
