@@ -66,27 +66,26 @@ public class StationModel {
                         System.out.println("I check " + (i + 1));
                         sendMessage(checkControllerMessage);
                         Thread.sleep(2000);
-                        int messageToSend = 35;
-                        int messageToReceive = 67;
-                        for (int x =0; x!=6; x++) {
-                            System.out.println("Semaphore " + (x+1));
-                            sendMessage(messageToSend);
-                            messageToSend+=2;
-                            while(convertReceived(receivedMessage) != messageToReceive) {
-                                sendMessage(checkControllerMessages.get(2));
-                                System.out.println("I want: "+ messageToReceive);
-                                System.out.println("I received: " + convertReceived(receivedMessage));
-                                Thread.sleep(2000);
-                            }
-                            messageToReceive+=2;
-                        }
-                        //j++;
-                    } while(true);
-                    //while(j != 3 && (convertReceived(receivedMessage) == 0 || convertReceived(receivedMessage) == 255) && errorId == 0)
-//                    if (j == 3) {
-//                        errorId = connectionErrorIds.get(i);
-//                        break;
-//                    }
+//                        int messageToSend = 35;
+//                        int messageToReceive = 67;
+//                        for (int x =0; x!=6; x++) {
+//                            System.out.println("Semaphore " + (x+1));
+//                            sendMessage(messageToSend);
+//                            messageToSend+=2;
+//                            while(convertReceived(receivedMessage) != messageToReceive) {
+//                                sendMessage(checkControllerMessages.get(2));
+//                                System.out.println("I want: "+ messageToReceive);
+//                                System.out.println("I received: " + convertReceived(receivedMessage));
+//                                Thread.sleep(2000);
+//                            }
+//                            messageToReceive+=2;
+//                        }
+                        j++;
+                    } while(j != 3 && (convertReceived(receivedMessage) == 0 || convertReceived(receivedMessage) == 255) && errorId == 0);
+                    if (j == 3) {
+                        errorId = connectionErrorIds.get(i);
+                        break;
+                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -71,7 +71,6 @@ public class WebController {
         return emitter;
     }
 
-    private static final String[] MAPS = "Screenshot_1 Screenshot_2 Screenshot_3 Screenshot_4 Screenshot_5 Screenshot_6".split(" ");
     private final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
     //private final ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
     @GetMapping(path = "/start", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -86,7 +85,7 @@ public class WebController {
                     way += 1;
                     System.out.println("SEMAPHORE " + way);
                     stationModel.sendMessage(33 + 2 * way); //message to change semaphores
-                    stationModel.sendMessage(130 + 2 * way); //message to change arrows
+                    //stationModel.sendMessage(130 + 2 * way); //message to change arrows
                     eventBuilder.id("1").data("Map_" + way).build();
                     emitter.send(eventBuilder);
                     if (stationModel.getErrorId() != 0) {
@@ -94,6 +93,7 @@ public class WebController {
                         emitter.send(eventBuilder);
                         break;
                     }
+                    Thread.sleep(3000);
                 }
                 stationModel.setState(State.SORTED);
                 eventBuilder.id("2").data("Done sorting").build();
