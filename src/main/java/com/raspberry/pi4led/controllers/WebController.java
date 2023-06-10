@@ -83,7 +83,7 @@ public class WebController {
             try {
                 for(char way : order.toCharArray()) {
                     way += 1;
-                    int msg = 33 + 2 * way;
+                    int msg = 33 + (2 * way);
                     System.out.println("SEMAPHORE " + way + " Message: " + msg);
                     stationModel.sendMessage(msg); //message to change semaphores
                     //stationModel.sendMessage(130 + 2 * way); //message to change arrows
