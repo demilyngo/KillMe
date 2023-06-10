@@ -31,7 +31,7 @@ public class StationModel {
     private int currentWay = -1;
     private String nameOfStation;
 
-    boolean sending, receiving;
+    boolean sending, receiving, falseMessage;
     private static GpioPinDigitalMultipurpose pin;
     private final BitSet receivedMessage = new BitSet(8);
 
@@ -49,7 +49,9 @@ public class StationModel {
     Runnable listener = () -> {
         //first bad message
         try {
+            falseMessage = true;
             sendMessage(255);
+            falseMessage = false;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -119,18 +121,17 @@ public class StationModel {
 
     ///////////////////////////////////
     public void receiveMessage() throws InterruptedException {
-        if (!sending && !receiving) {
+        if (!sending && !receiving && !falseMessage) {
             receivedMessage.clear();
             receiving = true;
 
             long startTime = System.currentTimeMillis();
-            while (pin.isHigh()) {
-                if(System.currentTimeMillis() - startTime > 5000) {
-                    errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
-                    receiving = false;
-                    return;
-                }
+            while (pin.isHigh() && System.currentTimeMillis() - startTime < 3000) {
                 Thread.onSpinWait();
+            }
+            if(pin.isHigh()) {
+                receiving = false;
+                return;
             }
 
             receivedMessage.clear(0);
