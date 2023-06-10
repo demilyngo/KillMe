@@ -87,9 +87,9 @@ public class WebController {
                     int msgToSemaphore = 33 + (2 * Character.getNumericValue(way));
                     System.out.println("SEMAPHORE " + way + " Message: " + msgToSemaphore);
                     stationModel.sendMessage(msgToSemaphore); //message to change semaphores
-                    int msgToArrows = 1 + (2 * Character.getNumericValue(way));
-                    System.out.println("ARROWS " + way + " Message: " + msgToArrows);
-                    stationModel.sendMessage(msgToArrows); //message to change arrows
+//                    int msgToArrows = 1 + (2 * Character.getNumericValue(way));
+//                    System.out.println("ARROWS " + way + " Message: " + msgToArrows);
+//                    stationModel.sendMessage(msgToArrows); //message to change arrows
                     eventBuilder.id("1").data("Map_" + way).build();
                     emitter.send(eventBuilder);
                     if (stationModel.getErrorId() != 0) {

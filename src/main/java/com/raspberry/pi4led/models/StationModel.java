@@ -59,7 +59,7 @@ public class StationModel {
 
         while (!receiving && !sending && !connectionErrorIds.contains(errorId)) {
             try {
-                for (int i = 0; i!= 3; i++) { /////////////
+                for (int i = 1; i!= 3; i++) { /////////////
                     int j = 0;
                     do { //repeat if didnt receive proper response
                         checkControllerMessage = checkControllerMessages.get(i);
