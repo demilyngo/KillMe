@@ -47,6 +47,12 @@ public class StationModel {
     }
 
     Runnable listener = () -> {
+        //first bad message
+        try {
+            sendMessage(255);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         while (!receiving && !sending && !connectionErrorIds.contains(errorId)) {
             try {
                 for (int i = 1; i!= 3; i++) { /////////////
@@ -224,11 +230,8 @@ public class StationModel {
 
     public static Integer convertReceived(BitSet bits) {
         int value = 0;
-//        for (int i = bits.length(); i != 0; i--) {
-//            value += bits.get(i) ? (1 << i) : 0;
-//        }
-        for(int i = 0; i!= 8; i++) {
-            value += Math.pow(2,7-i);
+        for (int i = 0; i != 8; i++) {
+            value += bits.get(i) ? (1 << 7-i) : 0;
         }
         return value;
     }
