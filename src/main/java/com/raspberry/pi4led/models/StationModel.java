@@ -59,7 +59,7 @@ public class StationModel {
 
         while (!receiving && !sending && !connectionErrorIds.contains(errorId)) {
             try {
-                for (int i = 1; i!= 3; i++) { /////////////
+                for (int i = 0; i!= 3; i++) { /////////////
                     int j = 0;
                     do { //repeat if didnt receive proper response
                         checkControllerMessage = checkControllerMessages.get(i);
@@ -115,7 +115,7 @@ public class StationModel {
             pin.high();
             sending = false;
             setInput();
-            //if checking for input then receive. else sending from application
+
             receiveMessage();
         }
     }
@@ -127,18 +127,19 @@ public class StationModel {
             receiving = true;
 
             long startTime = System.currentTimeMillis();
-            while (pin.isHigh() && System.currentTimeMillis() - startTime < 3000) {
+            while (pin.isHigh() && System.currentTimeMillis() - startTime < 3000) { // wait for start bit
                 Thread.onSpinWait();
             }
             if(pin.isHigh()) {
                 receiving = false;
+                errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
                 return;
             }
 
             receivedMessage.clear(0);
             System.out.println("Received: " + receivedMessage.get(0));
             Thread.sleep(10);
-            for (int i=1; i!=startBitLength+startBitLength+controllerLength+taskLength; i++) {
+            for (int i=1; i!=startBitLength+controllerLength+taskLength+stopBitLength; i++) {
                 if (pin.isLow()) {
                     receivedMessage.clear(i);
                 } else {
