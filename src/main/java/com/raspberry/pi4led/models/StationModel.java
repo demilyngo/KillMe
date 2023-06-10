@@ -73,6 +73,8 @@ public class StationModel {
                             System.out.println("I want: "+ messageToReceive);
                             System.out.println("I received: " + convertReceived(receivedMessage));
                             while(convertReceived(receivedMessage) != messageToReceive) {
+                                receiving = false;
+                                sending = false;
                                 receiveMessage();
                                 System.out.println("I received: " + convertReceived(receivedMessage));
                             }
