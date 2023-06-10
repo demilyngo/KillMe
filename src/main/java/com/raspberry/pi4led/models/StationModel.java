@@ -57,7 +57,7 @@ public class StationModel {
             e.printStackTrace();
         }
 
-        while (!receiving && !sending && !connectionErrorIds.contains(errorId)) {
+        while (!receiving && !sending) {
             try {
                 for (int i = 1; i!= 3; i++) { /////////////
                     int j = 0;
