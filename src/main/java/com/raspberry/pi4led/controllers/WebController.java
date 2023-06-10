@@ -85,7 +85,7 @@ public class WebController {
                     System.out.println("Way before: " + way);
                     way += 1;
                     System.out.println("Way after: " + way);
-                    int msg = 33 + (2 * way);
+                    int msg = 33 + (2 * (int)way);
                     System.out.println("SEMAPHORE " + way + " Message: " + msg);
                     stationModel.sendMessage(msg); //message to change semaphores
                     //stationModel.sendMessage(130 + 2 * way); //message to change arrows
