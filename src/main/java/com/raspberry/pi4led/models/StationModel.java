@@ -52,9 +52,11 @@ public class StationModel {
             falseMessage = true;
             sendMessage(255);
             falseMessage = false;
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         while (!receiving && !sending && !connectionErrorIds.contains(errorId)) {
             try {
                 for (int i = 1; i!= 3; i++) { /////////////
@@ -75,7 +77,7 @@ public class StationModel {
                             while(convertReceived(receivedMessage) != messageToReceive) {
                                 receiving = false;
                                 sending = false;
-                                receiveMessage();
+                                sendMessage(checkControllerMessages.get(2));
                                 System.out.println("I received: " + convertReceived(receivedMessage));
                             }
                             messageToReceive+=2;
