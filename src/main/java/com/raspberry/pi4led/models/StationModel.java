@@ -72,13 +72,11 @@ public class StationModel {
                             System.out.println("Semaphore " + (x+1));
                             sendMessage(messageToSend);
                             messageToSend+=2;
-                            System.out.println("I want: "+ messageToReceive);
-                            System.out.println("I received: " + convertReceived(receivedMessage));
                             while(convertReceived(receivedMessage) != messageToReceive) {
-                                receiving = false;
-                                sending = false;
                                 sendMessage(checkControllerMessages.get(2));
+                                System.out.println("I want: "+ messageToReceive);
                                 System.out.println("I received: " + convertReceived(receivedMessage));
+                                Thread.sleep(3000);
                             }
                             messageToReceive+=2;
                         }
