@@ -97,7 +97,11 @@ public class WebController {
                         emitter.send(eventBuilder);
                         break;
                     }
-                    Thread.sleep(3000);
+                    int msgToReceive = 65+(2 * Character.getNumericValue(way));
+                    //Thread.sleep(3000);
+                    while(StationModel.convertReceived(stationModel.getReceivedMessage())!=msgToReceive) {
+                        Thread.onSpinWait();
+                    }
                 }
                 stationModel.setState(State.SORTED);
                 eventBuilder.id("2").data("Done sorting").build();
