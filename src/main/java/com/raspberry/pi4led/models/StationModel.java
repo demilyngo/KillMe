@@ -65,7 +65,7 @@ public class StationModel {
                         checkControllerMessage = checkControllerMessages.get(i);
                         System.out.println("I check " + (i + 1));
                         sendMessage(checkControllerMessage);
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
                         int messageToSend = 35;
                         int messageToReceive = 67;
                         for (int x =0; x!=6; x++) {
@@ -76,7 +76,7 @@ public class StationModel {
                                 sendMessage(checkControllerMessages.get(2));
                                 System.out.println("I want: "+ messageToReceive);
                                 System.out.println("I received: " + convertReceived(receivedMessage));
-                                Thread.sleep(3000);
+                                Thread.sleep(2000);
                             }
                             messageToReceive+=2;
                         }
