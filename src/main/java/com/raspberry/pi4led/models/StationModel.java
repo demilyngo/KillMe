@@ -76,7 +76,7 @@ public class StationModel {
                                 sendMessage(checkControllerMessages.get(2));
                                 System.out.println("I want: "+ messageToReceive);
                                 System.out.println("I received: " + convertReceived(receivedMessage));
-                                Thread.sleep(2000);
+                                //Thread.sleep(2000);
                             }
                             messageToReceive+=2;
                         }
