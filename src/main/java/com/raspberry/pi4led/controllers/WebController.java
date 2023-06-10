@@ -81,12 +81,12 @@ public class WebController {
         SseEmitter.SseEventBuilder eventBuilder = SseEmitter.event();
         cachedThreadPool.execute(() -> {
             try {
-                for(int way : order.toCharArray()) {
+                for(char way : order.toCharArray()) {
                     System.out.println("Way before: " + way);
                     way += 1;
-                    System.out.println("Way after: " + (2 * way));
-                    System.out.println("Way after: " + (33 + (2 * way)));
-                    int msg = 33 + (2 * way);
+//                    System.out.println("Way after: " + (2 * way));
+//                    System.out.println("Way after: " + (33 + (2 * way)));
+                    int msg = 33 + (2 * Character.getNumericValue(way));
                     System.out.println("SEMAPHORE " + way + " Message: " + msg);
                     stationModel.sendMessage(msg); //message to change semaphores
                     //stationModel.sendMessage(130 + 2 * way); //message to change arrows
