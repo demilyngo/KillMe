@@ -83,8 +83,9 @@ public class WebController {
             try {
                 for(char way : order.toCharArray()) {
                     way += 1;
-                    System.out.println("SEMAPHORE " + way + " Message: " + (33+2*way));
-                    stationModel.sendMessage(33 + 2 * way); //message to change semaphores
+                    int msg = 33 + 2 * way;
+                    System.out.println("SEMAPHORE " + way + " Message: " + msg);
+                    stationModel.sendMessage(msg); //message to change semaphores
                     //stationModel.sendMessage(130 + 2 * way); //message to change arrows
                     eventBuilder.id("1").data("Map_" + way).build();
                     emitter.send(eventBuilder);
