@@ -82,7 +82,9 @@ public class WebController {
         cachedThreadPool.execute(() -> {
             try {
                 for(char way : order.toCharArray()) {
+                    System.out.println("Way before: " + way);
                     way += 1;
+                    System.out.println("Way after: " + way);
                     int msg = 33 + (2 * way);
                     System.out.println("SEMAPHORE " + way + " Message: " + msg);
                     stationModel.sendMessage(msg); //message to change semaphores
