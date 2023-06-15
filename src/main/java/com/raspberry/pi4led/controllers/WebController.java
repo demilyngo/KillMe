@@ -26,6 +26,9 @@ public class WebController {
         ArrayList<StationModel> station = new ArrayList<StationModel>();
         station.add(stationModel);
         model.addAttribute("station", station);
+//        model.addAttribute("cities", stationModel.getCities());
+//        model.addAttribute("counters", stationModel.getCounters());
+//        model.addAttribute("wagonList", stationModel.getWagonList());
         return "index";
     }
 

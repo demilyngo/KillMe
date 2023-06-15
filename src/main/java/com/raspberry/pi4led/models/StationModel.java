@@ -238,6 +238,9 @@ public class StationModel {
         this.control = control;
         this.nameOfStation = name;
         this.trainCounter = counter;
+        for (int i=0; i!= trainCounter; i++) {
+            wagonList.add(new wagonModel(i+1, cities.get(i+1), i+1));
+        }
         threadListener.start();
     }
 }

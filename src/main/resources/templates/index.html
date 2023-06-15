@@ -57,7 +57,7 @@
                 <img class="map" th:src="'../images/Map_' + ${station.getCurrentWay()} + '.png'" alt="Тут должна быть карта" width="1080">
                 <div class="cities">
                     <p class="city">Депо</p>
-                    <p class="city" th:each="city : ${station.getCities()}"><span th:text="${city} + ': '"></span></p>
+                    <p class="city" th:each="city : ${station.getCities()}"><span th:text="${city} + ': '"></span><span th:id="${city}" th:text="${station.getCounters().get(station.getCities().indexOf(city))}"></span></p>
                 </div>
             </div>
             <div class="bottomRight">
