@@ -215,6 +215,7 @@ public class StationModel {
                         sendMessage(checkControllerMessage);
                         j++;
                     } while(j != 3
+                            && (convertReceived(receivedMessage) != 0)
                             && errorId == 0); //menat?
                     if (j == 3) {
                         errorId = connectionErrorIds.get(i); // menat
