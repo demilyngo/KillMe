@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 @Controller
 public class WebController {
     private final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
-    final StationModel stationModel = new StationModel(State.WAITING, Control.FIELD, "Сургутская");
+    final StationModel stationModel = new StationModel(State.WAITING, Control.FIELD, "Сургутская", 4);
 
     @GetMapping("/")
     public String greeting(Model model) throws InterruptedException {

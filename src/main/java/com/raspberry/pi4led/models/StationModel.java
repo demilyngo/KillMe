@@ -233,10 +233,11 @@ public class StationModel {
     Thread threadListener = new Thread(listener);
     long listenerId = threadListener.getId();
 
-    public StationModel(State state, Control control, String name) {
+    public StationModel(State state, Control control, String name, Integer counter) {
         this.state = state;
         this.control = control;
         this.nameOfStation = name;
+        this.trainCounter = counter;
         threadListener.start();
     }
 }
