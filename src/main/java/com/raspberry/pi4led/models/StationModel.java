@@ -127,7 +127,7 @@ public class StationModel {
             Thread.sleep(10);
         }
 
-        if (convertReceived(receivedMessage) == 0) { //controller is connected
+        if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
             System.out.println("Checked successfully");
             return;
         }
@@ -137,7 +137,7 @@ public class StationModel {
         }
         //reaction on messages
         if (!receivedMessage.get(0) && receivedMessage.get(2)) {
-            if (convertReceived(receivedMessage) >65 && convertReceived(receivedMessage) < 79) {
+            if (this.state == State.SORTING && convertReceived(receivedMessage) == 63+2*currentWay) {
                 counters.set(currentWay-1, counters.get(currentWay-1) + 1); // counters at the ends
             }
             else if (convertReceived(receivedMessage) == 79) { //counter at the start
@@ -207,15 +207,16 @@ public class StationModel {
 
         while (true) {
             try {
-                for (int i = 0; i!= 4; i++) { /////////////
+                for (int i = 0; i!= 3; i++) { /////////////
                     int j = 0;
                     do { //repeat if didnt receive proper response
                         System.out.println("Checking " + i);
                         checkControllerMessage = checkControllerMessages.get(i);
                         sendMessage(checkControllerMessage);
                         j++;
+                        Thread.sleep(2000);
                     } while(j != 3
-                            && (convertReceived(receivedMessage) != 0)
+                            && (convertReceived(receivedMessage) == 0)
                             && errorId == 0); //menat?
                     if (j == 3) {
                         errorId = connectionErrorIds.get(i); // menat

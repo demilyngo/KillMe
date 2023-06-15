@@ -3,7 +3,6 @@ package com.raspberry.pi4led.controllers;
 import com.raspberry.pi4led.models.Control;
 import com.raspberry.pi4led.models.State;
 import com.raspberry.pi4led.models.StationModel;
-import com.raspberry.pi4led.models.wagonModel;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
