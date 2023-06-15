@@ -35,13 +35,13 @@
                         <p>Тип груза</p>
                     </div>
                     <div class="wagonItems">
-                        <div class="wagonItem" th:each="wagon : ${station.getWagonList()}">
+                        <div class="wagonItem" th:each="wagon : ${wagonList}">
                             <div class="wagonNumber">
                                 <p th:text="${wagon.getIndex() + 1}"/>
                             </div>
                             <select class="selectWagon" th:name="'wagon'">
                                 <option th:value="${wagon.getWayIndex()}" th:text="${wagon.getWhere()}"></option>
-                                <option th:each="city : ${station.getCities()}" th:if="${not (wagon.getWhere() eq city)}" th:text="${city}" th:value="${station.getCities().indexOf(city)}"></option>
+                                <option th:each="city : ${cities}" th:if="${not (wagon.getWhere() eq city)}" th:text="${city}" th:value="${cities.indexOf(city)}"></option>
                             </select>
 
                             <input type="checkbox" class="type"/>
@@ -57,7 +57,7 @@
                 <img class="map" th:src="'../images/Map_' + ${station.getCurrentWay()} + '.png'" alt="Тут должна быть карта" width="1080">
                 <div class="cities">
                     <p class="city">Депо</p>
-                    <p class="city" th:each="city : ${station.getCities()}"><span th:text="${city} + ': '"></span><span th:id="${city}" th:text="${station.getCounters().get(station.getCities().indexOf(city))}"></span></p>
+                    <p class="city" th:each="city : ${cities}"><span th:text="${city} + ': '"></span><span th:id="${city}" th:text="${counters.get(cities.indexOf(city))}"></span></p>
                 </div>
             </div>
             <div class="bottomRight">
