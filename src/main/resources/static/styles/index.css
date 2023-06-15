@@ -35,8 +35,6 @@ body {
     font-size: 26px;
 }
 
-
-
 .wagons {
     width:400px;
     height:630px;
@@ -90,6 +88,7 @@ body {
 .map {
     margin: 30px;
 }
+
 
 .city {
     margin: 0;
