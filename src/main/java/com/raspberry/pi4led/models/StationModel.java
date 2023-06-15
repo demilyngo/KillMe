@@ -35,9 +35,9 @@ public class StationModel {
     private static GpioPinDigitalMultipurpose pin;
     private final GpioController gpioController = GpioFactory.getInstance();
 
-    private ArrayList<String> cities = new ArrayList<String>(Arrays.asList("Москва", "Казань", "Магадан", "Воркута", "Якутск", "Тюмень"));
-    private ArrayList<Integer> counters = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0));
-    private ArrayList<wagonModel> wagonList = new ArrayList<wagonModel>();
+    ArrayList<String> cities = new ArrayList<String>(Arrays.asList("Москва", "Казань", "Магадан", "Воркута", "Якутск", "Тюмень"));
+    ArrayList<Integer> counters = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0));
+    ArrayList<wagonModel> wagonList = new ArrayList<wagonModel>();
 
     public void setInput() {
         if (pin == null) {
