@@ -12,14 +12,13 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Controller
 public class WebController {
     private final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
-    final StationModel stationModel = new StationModel(State.WAITING, Control.FIELD, "Сургутская", 4);
+    final StationModel stationModel = new StationModel(State.WAITING, Control.FIELD, "Сургутская");
 
     @GetMapping("/")
     public String greeting(Model model) throws InterruptedException {
