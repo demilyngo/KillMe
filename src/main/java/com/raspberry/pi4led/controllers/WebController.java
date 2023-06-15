@@ -37,8 +37,8 @@ public class WebController {
             cachedThreadPool.execute(() -> {
                 try {
                     stationModel.sendMessage(15); //moving to position for sorting
-                    while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 81) {
-                        if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 79) {
+                    while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
+                        if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 17) {
                             var eventBuilder = SseEmitter.event();
                             //stationModel.setTrainCounter(stationModel.getTrainCounter()+1);
                             //wagonModel newWagon = new wagonModel(stationModel.getTrainCounter()+1, stationModel.getCities().get(0), 0);
