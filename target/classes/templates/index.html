@@ -23,25 +23,22 @@
         <div class="leftSide">
             <img src="../images/SurSU_logo.jpg" alt="Логотип СурГУ">
             <p class="state" th:text="'Состояние: ' + ${station.getState().displayValue}"></p>
-
-
-
             <form id="form">
                 <div class="wagons">
-                    <div id="overlay" style="display: none"></div>
+                    <div id="overlay"></div>
                     <div class="firstRow">
                         <p>Вагон</p>
                         <p>Пункт назначения</p>
                         <p>Тип груза</p>
                     </div>
                     <div class="wagonItems">
-                        <div class="wagonItem" th:each="wagon : ${station.getWagonList()}">
+                        <div class="wagonItem" th:each="wagon : ${wagonList}">
                             <div class="wagonNumber">
-                                <p th:text="${wagon.getIndex() + 1}"/>
+                                <p th:text="${wagon.getIndex()}"/>
                             </div>
                             <select class="selectWagon" th:name="'wagon'">
                                 <option th:value="${wagon.getWayIndex()}" th:text="${wagon.getWhere()}"></option>
-                                <option th:each="city : ${station.getCities()}" th:if="${not (wagon.getWhere() eq city)}" th:text="${city}" th:value="${station.getCities().indexOf(city)}"></option>
+                                <option th:each="city : ${cities}" th:if="${not (wagon.getWhere() eq city)}" th:text="${city}" th:value="${cities.indexOf(city)}"></option>
                             </select>
 
                             <input type="checkbox" class="type"/>
@@ -54,18 +51,16 @@
         <div class="rightSide">
             <div class="topRight">
                 <p class="sortCounter">Ожидают сортировку: <span id="toSortCounter" th:text="${station.getTrainCounter()}"></span></p>
-                <img class="map" th:src="'../images/Map_' + ${station.getCurrentWay()} + '.png'" alt="Тут должна быть карта" width="1080">
+                <img class="map" src="../images/Map_depot.png" alt="Тут должна быть карта" width="1080">
                 <div class="cities">
                     <p class="city">Депо</p>
-                    <p class="city" th:each="city : ${station.getCities()}"><span th:text="${city} + ': '"></span><span th:id="${city}" th:text="${station.getCounters().get(station.getCities().indexOf(city))}"></span></p>
+                    <p class="city" th:each="city : ${cities}"><span th:text="${city} + ': '"></span></span><span th:id="${city}">0</span></p>
                 </div>
             </div>
             <div class="bottomRight">
-                <div class="mainButtons">
-                    <button id="waitButton" th:style="${station.getState().displayValue == 'Ожидание' ? 'display:block' : 'display:none'}">Ожидание</button>
-                    <button id="startButton" th:style="${station.getState().displayValue == 'Готово к сортировке' ? 'display:block' : 'display:none'}">Начать сортировку</button>
-                    <a href="restart"><button id="restartButton" th:style="${station.getState().displayValue == 'Отсортировано' ? 'display:block' : 'display:none'}">Сброс</button></a>
-                </div>
+                <button id="waitButton">Ожидание</button>
+                <button id="startButton" style="display: none">Начать сортировку</button>
+                <a href="restart"><button id="restartButton" style="display: none">Сброс</button></a>
                 <button id="alarmButton" style="background-color: orangered">Авария</button>
                 <p th:text="${station.getControl().displayValue}"></p>
             </div>
@@ -75,7 +70,7 @@
     <!-- Скрытый блок модального окна -->
     <div id="ex1" class="modal" style="z-index: 3">
         <h2>Ошибка</h2>
-        <p id="controllerError">Пример ошибки</p>
+        <p id="controllerError"></p>
     </div>
     <p style="display: none"><a href="#ex1" class="modal-click">Open Modal</a></p>
 </div>
