@@ -127,7 +127,7 @@ public class StationModel {
             Thread.sleep(10);
         }
 
-        if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
+        if (convertReceived(receivedMessage) == 0) { //controller is connected
             System.out.println("Checked successfully");
             return;
         }
@@ -215,7 +215,6 @@ public class StationModel {
                         sendMessage(checkControllerMessage);
                         j++;
                     } while(j != 3
-                            && (convertReceived(receivedMessage) == 0)
                             && errorId == 0); //menat?
                     if (j == 3) {
                         errorId = connectionErrorIds.get(i); // menat
