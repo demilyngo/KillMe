@@ -114,7 +114,6 @@ public class StationModel {
             Thread.onSpinWait();
         }
         if(pin.isHigh()) {
-            errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
             return;
         }
         receivedMessage.clear(0);
@@ -131,7 +130,7 @@ public class StationModel {
         }
 
         if(previousMessage != receivedMessage) {
-            
+
             previousMessage = receivedMessage;
 
             if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
