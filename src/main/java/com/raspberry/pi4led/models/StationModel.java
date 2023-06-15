@@ -210,6 +210,7 @@ public class StationModel {
                 for (int i = 0; i!= 4; i++) { /////////////
                     int j = 0;
                     do { //repeat if didnt receive proper response
+                        System.out.println("Checking " + i);
                         checkControllerMessage = checkControllerMessages.get(i);
                         sendMessage(checkControllerMessage);
                         j++;
