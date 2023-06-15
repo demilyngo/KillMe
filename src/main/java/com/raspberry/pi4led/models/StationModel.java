@@ -100,7 +100,9 @@ public class StationModel {
         }
         pin.high();
         setInput();
-        receiveMessage();
+        if(!isFalseMessage) {
+            receiveMessage();
+        }
     }
 
 
