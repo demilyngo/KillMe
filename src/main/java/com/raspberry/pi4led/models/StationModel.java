@@ -104,7 +104,8 @@ public class StationModel {
                 System.out.println("Sent: " + messageBitSet.get(i));
                 Thread.sleep(10);
             }
-            pin.high();
+            //pin.high();
+            System.out.println(System.currentTimeMillis());
             setInput();
             if(!isFalseMessage) {
                 receiveMessage();
