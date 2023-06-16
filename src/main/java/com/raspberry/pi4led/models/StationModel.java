@@ -221,7 +221,7 @@ public class StationModel {
         while (true) {
             try {
                 for (int i = 0; i!= 3; i++) { /////////////
-                    System.out.println("Checking ");
+                    System.out.println("Checking " + i);
                     checkControllerMessage = checkControllerMessages.get(i);
                     sendMessage(checkControllerMessage);
                     Thread.sleep(5000);
