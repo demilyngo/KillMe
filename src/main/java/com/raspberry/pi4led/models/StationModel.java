@@ -150,7 +150,7 @@ public class StationModel {
         frequencyTimer = System.currentTimeMillis();
         receivedMessage.clear(0);
         System.out.println("Received: " + receivedMessage.get(0));
-        System.out.println(System.currentTimeMillis());
+        //System.out.println(System.currentTimeMillis());
         while (true) {
             if (System.currentTimeMillis() - frequencyTimer >= 10) {
                 for (int i = 1; i != messageLength; i++) {
@@ -159,12 +159,12 @@ public class StationModel {
                             if (pin.isLow()) {
                                 receivedMessage.clear(i);
                                 frequencyTimer = System.currentTimeMillis();
-                                break;
                             } else {
                                 receivedMessage.set(i);
                                 frequencyTimer = System.currentTimeMillis();
-                                break;
                             }
+                            System.out.print("Received: " + receivedMessage.get(i));
+                            break;
                         }
                     }
                 }
