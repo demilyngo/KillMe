@@ -97,7 +97,7 @@ public class StationModel {
             long startT = System.currentTimeMillis();
             for (int i = 0; i!=messageLength; i++) {
                 while (true) {
-                    if (startT - System.currentTimeMillis() < 10) {
+                    if (startT - System.currentTimeMillis() >= 10) {
                         System.out.println(System.currentTimeMillis());
                         if (messageBitSet.get(i)) {
                             pin.high();
