@@ -147,19 +147,21 @@ public class StationModel {
         if (pin.isHigh()) {
             return;
         }
-        frequencyTimer = System.currentTimeMillis() + 10 / 2;
+        frequencyTimer = System.currentTimeMillis() + 3;
         receivedMessage.clear(0);
         System.out.println("Received: " + receivedMessage.get(0));
-        //System.out.println(System.currentTimeMillis());
+        System.out.println(System.currentTimeMillis());
         for (int i = 1; i != messageLength; i++) {
             while (true) {
                 if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 10) {
                     if (pin.isLow()) {
                         receivedMessage.clear(i);
                         frequencyTimer = System.currentTimeMillis();
+                        System.out.println(System.currentTimeMillis());
                     } else {
                         receivedMessage.set(i);
                         frequencyTimer = System.currentTimeMillis();
+                        System.out.println(System.currentTimeMillis());
                     }
                     System.out.println("Received: " + receivedMessage.get(i));
                     break;
