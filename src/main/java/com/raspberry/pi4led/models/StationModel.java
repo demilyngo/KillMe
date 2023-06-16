@@ -132,7 +132,8 @@ public class StationModel {
         if(previousMessage != receivedMessage) {
 
             previousMessage = receivedMessage;
-
+            System.out.println(convertReceived(receivedMessage));
+            System.out.println(checkControllerMessage);
             if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
                 System.out.println("Checked successfully");
                 return;
