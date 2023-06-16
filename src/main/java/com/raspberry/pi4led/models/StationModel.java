@@ -87,7 +87,7 @@ public class StationModel {
     public synchronized void sendMessage(Integer message) throws InterruptedException {
         int j = 0;
         do { //repeat if didnt receive proper response
-            if(j == 1) {
+            if(j > 0) {
                 System.out.println("Couldnt recceive. Repeating.");
                 Thread.sleep(2000);
             }
