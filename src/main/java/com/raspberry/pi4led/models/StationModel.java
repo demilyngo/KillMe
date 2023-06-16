@@ -214,7 +214,7 @@ public class StationModel {
                         checkControllerMessage = checkControllerMessages.get(i);
                         sendMessage(checkControllerMessage);
                         j++;
-                        Thread.sleep(5000);
+                        Thread.sleep(500);
                     } while(j != 5
                             && (convertReceived(receivedMessage) == 0)
                             && errorId == 0); //menat?
