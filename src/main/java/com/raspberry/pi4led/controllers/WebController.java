@@ -36,11 +36,11 @@ public class WebController {
             stationModel.setState(State.COMING);
             cachedThreadPool.execute(() -> {
                 try {
-                    System.out.println("Arrows to 1");
-                    stationModel.sendMessage(3);
-                    Thread.sleep(2000);
-                    System.out.println("Semaphores to 1");
-                    stationModel.sendMessage(35);
+//                    System.out.println("Arrows to 1");
+//                    stationModel.sendMessage(3);
+//                    Thread.sleep(2000);
+//                    System.out.println("Semaphores to 1");
+//                    stationModel.sendMessage(35);
 //                    System.out.println("Arrows to 2");
 //                    stationModel.sendMessage(5);
 //                    Thread.sleep(2000);
@@ -56,26 +56,27 @@ public class WebController {
 //                    System.out.println("Arrows to 6");
 //                    stationModel.sendMessage(13);
 //                    Thread.sleep(2000);
-//                    stationModel.sendMessage(15); //moving to position for sorting
-//                    while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
-//                        if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 17) {
-//                            var eventBuilder = SseEmitter.event();
-//                            eventBuilder.id("1").data(stationModel.getCities().get(0));
-//
-//                            emitter.send(eventBuilder);
-//                        }
-//                    }
-//                    var eventBuilder = SseEmitter.event();
-//                    stationModel.setState(State.READY);
-//                    eventBuilder.id("2").data("Ready to sort").build();
-//                    emitter.send(eventBuilder);
-//
-//                    if(stationModel.getErrorId() != 0) {
-//                        eventBuilder = SseEmitter.event();
-//                        eventBuilder.id("3").data(stationModel.getErrorId()); //to open modal with error
-//                        emitter.send(eventBuilder);
-//                    }
-                } catch (InterruptedException  e) {
+
+                    stationModel.sendMessage(15); //moving to position for sorting
+                    while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
+                        if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 19) {
+                            var eventBuilder = SseEmitter.event();
+                            eventBuilder.id("1").data(stationModel.getCities().get(0));
+
+                            emitter.send(eventBuilder);
+                        }
+                    }
+                    var eventBuilder = SseEmitter.event();
+                    stationModel.setState(State.READY);
+                    eventBuilder.id("2").data("Ready to sort").build();
+                    emitter.send(eventBuilder);
+
+                    if(stationModel.getErrorId() != 0) {
+                        eventBuilder = SseEmitter.event();
+                        eventBuilder.id("3").data(stationModel.getErrorId()); //to open modal with error
+                        emitter.send(eventBuilder);
+                    }
+                } catch (InterruptedException | IOException e) {
                     e.printStackTrace();
                 }
             });
