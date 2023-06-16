@@ -93,17 +93,34 @@ public class StationModel {
             }
             setOutput();
             BitSet messageBitSet = convertToBitSet(message);
+
+            long startT = System.currentTimeMillis();
             for (int i = 0; i!=messageLength; i++) {
-                System.out.println(System.currentTimeMillis());
-                if (messageBitSet.get(i)) {
-                    pin.high();
-                    System.out.println("Sent: " + messageBitSet.get(i));
-                    Thread.sleep(10);
-                    continue;
+                while (true) {
+                    if (startT - System.currentTimeMillis() < 10) {
+                        System.out.println(System.currentTimeMillis());
+                        if (messageBitSet.get(i)) {
+                            pin.high();
+                            messageBitSet = convertToBitSet(message);
+                            System.out.println("Sent: " + messageBitSet.get(i));
+                            continue;
+                        }
+                        pin.low();
+                        messageBitSet = convertToBitSet(message);
+                        System.out.println("Sent: " + messageBitSet.get(i));
+                        break;
+                    }
                 }
-                pin.low();
-                System.out.println("Sent: " + messageBitSet.get(i));
-                Thread.sleep(10);
+//                System.out.println(System.currentTimeMillis());
+//                if (messageBitSet.get(i)) {
+//                    pin.high();
+//                    System.out.println("Sent: " + messageBitSet.get(i));
+//                    Thread.sleep(10);
+//                    continue;
+//                }
+//                pin.low();
+//                System.out.println("Sent: " + messageBitSet.get(i));
+//                Thread.sleep(10);
             }
             //pin.high();
             setInput();
