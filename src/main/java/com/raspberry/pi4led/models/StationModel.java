@@ -14,6 +14,7 @@ public class StationModel {
     private final int controllerLength = 2;
     private final int taskLength = 4;
     private final int messageLength = startBitLength+controllerLength+taskLength+stopBitLength;
+    long frequencyTimer = System.currentTimeMillis();
 
     private ArrayList<Integer> checkControllerMessages = new ArrayList<>(Arrays.asList(1, 33, 65, 97));
     private Integer checkControllerMessage;
@@ -94,19 +95,19 @@ public class StationModel {
             setOutput();
             BitSet messageBitSet = convertToBitSet(message);
 
-            long startT = System.currentTimeMillis();
+            frequencyTimer = System.currentTimeMillis();
             for (int i = 0; i!=messageLength; i++) {
                 while (true) {
-                    if (System.currentTimeMillis() - startT >= 10) {
-                        System.out.println(System.currentTimeMillis());
+                    if (System.currentTimeMillis() - frequencyTimer >= 10) {
+//                        System.out.println(System.currentTimeMillis());
                         if (messageBitSet.get(i)) {
                             pin.high();
-                            startT = System.currentTimeMillis();
+                            frequencyTimer = System.currentTimeMillis();
                             System.out.println("Sent: " + messageBitSet.get(i));
                             break;
                         }
                         pin.low();
-                        startT = System.currentTimeMillis();
+                        frequencyTimer = System.currentTimeMillis();
                         System.out.println("Sent: " + messageBitSet.get(i));
                         break;
                     }
@@ -146,18 +147,38 @@ public class StationModel {
         if (pin.isHigh()) {
             return;
         }
+        frequencyTimer = System.currentTimeMillis();
         receivedMessage.clear(0);
         System.out.println("Received: " + receivedMessage.get(0));
-        Thread.sleep(10);
-        for (int i = 1; i != messageLength; i++) {
-            if (pin.isLow()) {
-                receivedMessage.clear(i);
-            } else {
-                receivedMessage.set(i);
+        System.out.println(System.currentTimeMillis());
+        if(System.currentTimeMillis() - frequencyTimer >= 10) {
+            for (int i = 1; i != messageLength; i++) {
+                while (true) {
+                    if (System.currentTimeMillis() - frequencyTimer >= 10) {
+                        if(pin.isLow()) {
+                            receivedMessage.clear(i);
+                            frequencyTimer = System.currentTimeMillis();
+                            break;
+                        } else {
+                            receivedMessage.set(i);
+                            frequencyTimer = System.currentTimeMillis();
+                            break;
+                        }
+                    }
+                }
             }
-            System.out.println("Received: " + receivedMessage.get(i));
-            Thread.sleep(10);
         }
+
+//        Thread.sleep(10);
+//        for (int i = 1; i != messageLength; i++) {
+//            if (pin.isLow()) {
+//                receivedMessage.clear(i);
+//            } else {
+//                receivedMessage.set(i);
+//            }
+//            System.out.println("Received: " + receivedMessage.get(i));
+//            Thread.sleep(10);
+//        }
         System.out.println("Whole message: " + convertReceived(receivedMessage));
 
         if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
