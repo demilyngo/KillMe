@@ -163,7 +163,7 @@ public class StationModel {
                                 receivedMessage.set(i);
                                 frequencyTimer = System.currentTimeMillis();
                             }
-                            System.out.print("Received: " + receivedMessage.get(i));
+                            System.out.println("Received: " + receivedMessage.get(i));
                             break;
                         }
                     }
