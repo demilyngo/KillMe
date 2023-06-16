@@ -107,27 +107,38 @@ public class StationModel {
 
 
     public void receiveMessage() throws InterruptedException {
-        receivedMessage.clear();
-        long startTime = System.currentTimeMillis();
-        while (pin.isHigh() && System.currentTimeMillis() - startTime < 3000) { // wait for start bit
-            Thread.onSpinWait();
-        }
-        if(pin.isHigh()) {
+        int j = 0;
+        do { //repeat if didnt receive proper response
+            receivedMessage.clear();
+            long startTime = System.currentTimeMillis();
+            while (pin.isHigh() && System.currentTimeMillis() - startTime < 3000) { // wait for start bit
+                Thread.onSpinWait();
+            }
+            if(pin.isHigh()) {
+                return;
+            }
+            receivedMessage.clear(0);
+            System.out.println("Received: " + receivedMessage.get(0));
+            Thread.sleep(10);
+            for (int i=1; i!=messageLength; i++) {
+                if (pin.isLow()) {
+                    receivedMessage.clear(i);
+                } else {
+                    receivedMessage.set(i);
+                }
+                System.out.println("Received: " + receivedMessage.get(i));
+                Thread.sleep(10);
+            }
+            System.out.println(convertReceived(receivedMessage));
+            j++;
+            Thread.sleep(500);
+        } while(j != 5
+                && (convertReceived(receivedMessage) == 0)
+                && errorId == 0); //menat?
+        if (j == 5) {
+            errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage)); // menat
             return;
         }
-        receivedMessage.clear(0);
-        System.out.println("Received: " + receivedMessage.get(0));
-        Thread.sleep(10);
-        for (int i=1; i!=messageLength; i++) {
-            if (pin.isLow()) {
-                receivedMessage.clear(i);
-            } else {
-                receivedMessage.set(i);
-            }
-            System.out.println("Received: " + receivedMessage.get(i));
-            Thread.sleep(10);
-        }
-        System.out.println(convertReceived(receivedMessage));
 
         if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
             System.out.println("Checked successfully");
@@ -208,20 +219,10 @@ public class StationModel {
         while (true) {
             try {
                 for (int i = 0; i!= 3; i++) { /////////////
-                    int j = 0;
-                    do { //repeat if didnt receive proper response
-                        System.out.println("Checking " + i);
-                        checkControllerMessage = checkControllerMessages.get(i);
-                        sendMessage(checkControllerMessage);
-                        j++;
-                        Thread.sleep(500);
-                    } while(j != 5
-                            && (convertReceived(receivedMessage) == 0)
-                            && errorId == 0); //menat?
-                    if (j == 5) {
-                        errorId = connectionErrorIds.get(i); // menat
-                        break;
-                    }
+                    System.out.println("Checking " + i);
+                    checkControllerMessage = checkControllerMessages.get(i);
+                    sendMessage(checkControllerMessage);
+                    Thread.sleep(500);
                 }
                 if(connectionErrorIds.contains(errorId)) {
                     break;
