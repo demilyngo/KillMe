@@ -188,7 +188,7 @@ public class StationModel {
         if (errors.contains(convertReceived(receivedMessage))) { //errors handler
             errorId = executionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
             return;
-        } else if (convertReceived(receivedMessage) == 17) { //counter at the start
+        } else if (convertReceived(receivedMessage) == 19) { //counter at the start  17
             if (this.state == State.COMING) {
                 trainCounter++;
                 wagonModel newWagon = new wagonModel(trainCounter, cities.get(0), 0);
@@ -263,7 +263,7 @@ public class StationModel {
                     System.out.println("Checking " + i);
                     checkControllerMessage = checkControllerMessages.get(i);
                     sendMessage(checkControllerMessage);
-                    Thread.sleep(5000);
+                    Thread.sleep(2000);
                 }
                 if(connectionErrorIds.contains(errorId)) {
                     break;

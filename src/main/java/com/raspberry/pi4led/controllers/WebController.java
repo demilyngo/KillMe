@@ -34,52 +34,29 @@ public class WebController {
         SseEmitter emitter = new SseEmitter(-1L);
         if(stationModel.getState() == State.WAITING) {
             stationModel.setState(State.COMING);
-            cachedThreadPool.execute(() -> {
-                try {
-//                    System.out.println("Arrows to 1");
-//                    stationModel.sendMessage(3);
-//                    Thread.sleep(2000);
-//                    System.out.println("Semaphores to 1");
-//                    stationModel.sendMessage(35);
-//                    System.out.println("Arrows to 2");
-//                    stationModel.sendMessage(5);
-//                    Thread.sleep(2000);
-//                    System.out.println("Arrows to 3");
-//                    stationModel.sendMessage(7);
-//                    Thread.sleep(2000);
-//                    System.out.println("Arrows to 4");
-//                    stationModel.sendMessage(9);
-//                    Thread.sleep(2000);
-//                    System.out.println("Arrows to 5");
-//                    stationModel.sendMessage(11);
-//                    Thread.sleep(2000);
-//                    System.out.println("Arrows to 6");
-//                    stationModel.sendMessage(13);
-//                    Thread.sleep(2000);
-
-                    stationModel.sendMessage(15); //moving to position for sorting
-                    while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
-                        if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 19) {
-                            var eventBuilder = SseEmitter.event();
-                            eventBuilder.id("1").data(stationModel.getCities().get(0));
-
-                            emitter.send(eventBuilder);
-                        }
-                    }
-                    var eventBuilder = SseEmitter.event();
-                    stationModel.setState(State.READY);
-                    eventBuilder.id("2").data("Ready to sort").build();
-                    emitter.send(eventBuilder);
-
-                    if(stationModel.getErrorId() != 0) {
-                        eventBuilder = SseEmitter.event();
-                        eventBuilder.id("3").data(stationModel.getErrorId()); //to open modal with error
+            try {
+                stationModel.sendMessage(15); //moving to position for sorting
+                while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
+                    if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 19) {
+                        var eventBuilder = SseEmitter.event();
+                        eventBuilder.id("1").data(stationModel.getCities().get(0));
                         emitter.send(eventBuilder);
+                        stationModel.getReceivedMessage().clear();
                     }
-                } catch (InterruptedException | IOException e) {
-                    e.printStackTrace();
                 }
-            });
+                var eventBuilder = SseEmitter.event();
+                stationModel.setState(State.READY);
+                eventBuilder.id("2").data("Ready to sort").build();
+                emitter.send(eventBuilder);
+
+                if (stationModel.getErrorId() != 0) {
+                    eventBuilder = SseEmitter.event();
+                    eventBuilder.id("3").data(stationModel.getErrorId()); //to open modal with error
+                    emitter.send(eventBuilder);
+                }
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
         }
         return emitter;
     }
