@@ -29,8 +29,8 @@ public class WebController {
     }
 
     @ResponseBody
-    @GetMapping("/wait")
-    public SseEmitter startSorting()  {
+    @GetMapping(path = "/wait", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter prepareForSorting()  {
         SseEmitter emitter = new SseEmitter();
         if(stationModel.getState() == State.WAITING) {
             stationModel.setState(State.COMING);
@@ -40,10 +40,8 @@ public class WebController {
                     while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
                         if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 17) {
                             var eventBuilder = SseEmitter.event();
-                            //stationModel.setTrainCounter(stationModel.getTrainCounter()+1);
-                            //wagonModel newWagon = new wagonModel(stationModel.getTrainCounter()+1, stationModel.getCities().get(0), 0);
-                            //stationModel.getWagonList().add(newWagon);
                             eventBuilder.id("1").data(stationModel.getCities().get(0));
+
                             emitter.send(eventBuilder);
                         }
                     }
@@ -67,7 +65,7 @@ public class WebController {
 
     @GetMapping(path = "/start", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
-    public SseEmitter getWords(@RequestParam(value = "order", defaultValue = "0") String order) {
+    public SseEmitter startSorting(@RequestParam(value = "order", defaultValue = "0") String order) {
         stationModel.setState(State.SORTING);
         SseEmitter emitter = new SseEmitter();
 
@@ -76,10 +74,8 @@ public class WebController {
                 for(char way : order.toCharArray()) {
                     var eventBuilder = SseEmitter.event();
                     stationModel.setCurrentWay(Character.getNumericValue(way)+1);
-
                     int msgToSemaphore = 33 + (2 * stationModel.getCurrentWay());
                     stationModel.sendMessage(msgToSemaphore); //message to change semaphores
-
                     int msgToArrows = 1 + (2 * stationModel.getCurrentWay());
                     stationModel.sendMessage(msgToArrows); //message to change arrows
 
@@ -94,8 +90,6 @@ public class WebController {
                     while(stationModel.convertReceived(stationModel.getReceivedMessage())!=msgToReceive) {
                         Thread.onSpinWait();
                     }
-//                    stationModel.getCounters().set(stationModel.getCurrentWay()-1,
-//                            stationModel.getCounters().get(stationModel.getCurrentWay()-1) + 1);
                 }
                 var eventBuilder = SseEmitter.event();
                 stationModel.setState(State.SORTED);
