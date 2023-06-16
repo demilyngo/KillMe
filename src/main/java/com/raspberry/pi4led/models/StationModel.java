@@ -103,7 +103,7 @@ public class StationModel {
                             pin.high();
                             startT = System.currentTimeMillis();
                             System.out.println("Sent: " + messageBitSet.get(i));
-                            continue;
+                            break;
                         }
                         pin.low();
                         startT = System.currentTimeMillis();
