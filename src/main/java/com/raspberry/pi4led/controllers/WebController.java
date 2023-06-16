@@ -39,6 +39,8 @@ public class WebController {
                     System.out.println("Arrows to 1");
                     stationModel.sendMessage(3);
                     Thread.sleep(2000);
+                    System.out.println("Semaphores to 1");
+                    stationModel.sendMessage(35);
 //                    System.out.println("Arrows to 2");
 //                    stationModel.sendMessage(5);
 //                    Thread.sleep(2000);
