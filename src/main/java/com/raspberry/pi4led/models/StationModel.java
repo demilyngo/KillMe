@@ -32,7 +32,6 @@ public class StationModel {
 
     boolean isSending, isReceiving, isFalseMessage;
     private BitSet receivedMessage = new BitSet(8);
-    private BitSet previousMessage = new BitSet(8);
     private static GpioPinDigitalMultipurpose pin;
     private final GpioController gpioController = GpioFactory.getInstance();
 
@@ -128,11 +127,8 @@ public class StationModel {
             System.out.println("Received: " + receivedMessage.get(i));
             Thread.sleep(10);
         }
-
-
-        previousMessage = receivedMessage;
         System.out.println(convertReceived(receivedMessage));
-        System.out.println(checkControllerMessage);
+
         if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
             System.out.println("Checked successfully");
             return;
@@ -218,7 +214,7 @@ public class StationModel {
                         checkControllerMessage = checkControllerMessages.get(i);
                         sendMessage(checkControllerMessage);
                         j++;
-                        Thread.sleep(500);
+                        Thread.sleep(5000);
                     } while(j != 5
                             && (convertReceived(receivedMessage) == 0)
                             && errorId == 0); //menat?
