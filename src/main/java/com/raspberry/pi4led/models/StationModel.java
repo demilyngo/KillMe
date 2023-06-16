@@ -151,21 +151,24 @@ public class StationModel {
         receivedMessage.clear(0);
         System.out.println("Received: " + receivedMessage.get(0));
         System.out.println(System.currentTimeMillis());
-        if(System.currentTimeMillis() - frequencyTimer >= 10) {
-            for (int i = 1; i != messageLength; i++) {
-                while (true) {
-                    if (System.currentTimeMillis() - frequencyTimer >= 10) {
-                        if(pin.isLow()) {
-                            receivedMessage.clear(i);
-                            frequencyTimer = System.currentTimeMillis();
-                            break;
-                        } else {
-                            receivedMessage.set(i);
-                            frequencyTimer = System.currentTimeMillis();
-                            break;
+        while (true) {
+            if (System.currentTimeMillis() - frequencyTimer >= 10) {
+                for (int i = 1; i != messageLength; i++) {
+                    while (true) {
+                        if (System.currentTimeMillis() - frequencyTimer >= 10) {
+                            if (pin.isLow()) {
+                                receivedMessage.clear(i);
+                                frequencyTimer = System.currentTimeMillis();
+                                break;
+                            } else {
+                                receivedMessage.set(i);
+                                frequencyTimer = System.currentTimeMillis();
+                                break;
+                            }
                         }
                     }
                 }
+                break;
             }
         }
 
