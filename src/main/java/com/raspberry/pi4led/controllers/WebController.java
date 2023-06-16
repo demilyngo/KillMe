@@ -36,16 +36,22 @@ public class WebController {
             stationModel.setState(State.COMING);
             cachedThreadPool.execute(() -> {
                 try {
+                    System.out.println("Arrows to 1");
                     stationModel.sendMessage(3);
                     Thread.sleep(2000);
+                    System.out.println("Arrows to 2");
                     stationModel.sendMessage(5);
                     Thread.sleep(2000);
+                    System.out.println("Arrows to 3");
                     stationModel.sendMessage(7);
                     Thread.sleep(2000);
+                    System.out.println("Arrows to 4");
                     stationModel.sendMessage(9);
                     Thread.sleep(2000);
+                    System.out.println("Arrows to 5");
                     stationModel.sendMessage(11);
                     Thread.sleep(2000);
+                    System.out.println("Arrows to 6");
                     stationModel.sendMessage(13);
                     Thread.sleep(2000);
 //                    stationModel.sendMessage(15); //moving to position for sorting
