@@ -31,7 +31,7 @@ public class WebController {
     @ResponseBody
     @GetMapping(path = "/wait", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter prepareForSorting()  {
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter(-1L);
         if(stationModel.getState() == State.WAITING) {
             stationModel.setState(State.COMING);
             cachedThreadPool.execute(() -> {
@@ -88,7 +88,7 @@ public class WebController {
     @ResponseBody
     public SseEmitter startSorting(@RequestParam(value = "order", defaultValue = "0") String order) {
         stationModel.setState(State.SORTING);
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter(-1L);
 
         cachedThreadPool.execute(() -> {
             try {
