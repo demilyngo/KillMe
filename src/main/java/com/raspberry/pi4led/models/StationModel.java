@@ -131,10 +131,9 @@ public class StationModel {
             }
             System.out.println(convertReceived(receivedMessage));
             j++;
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } while(j != 5
-                && (convertReceived(receivedMessage) == 0)
-                && errorId == 0); //menat?
+                && convertReceived(receivedMessage) == 0); //menat?
         if (j == 5) {
             errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage)); // menat
             return;
@@ -222,7 +221,7 @@ public class StationModel {
                     System.out.println("Checking " + i);
                     checkControllerMessage = checkControllerMessages.get(i);
                     sendMessage(checkControllerMessage);
-                    Thread.sleep(500);
+                    Thread.sleep(5000);
                 }
                 if(connectionErrorIds.contains(errorId)) {
                     break;
