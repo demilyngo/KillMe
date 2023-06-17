@@ -278,7 +278,7 @@ public class StationModel {
                     sendMessage(checkControllerMessage);
                     long delay = System.currentTimeMillis();
                     while (true) {
-                        if (System.currentTimeMillis()-delay > 200) {
+                        if (System.currentTimeMillis()-delay > 1000) {
                             break;
                         }
                     }

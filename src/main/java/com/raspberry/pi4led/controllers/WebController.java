@@ -74,9 +74,7 @@ public class WebController {
                     var eventBuilder = SseEmitter.event();
                     stationModel.setCurrentWay(Character.getNumericValue(way)+1);
                     int msgToSemaphore = 33 + (2 * stationModel.getCurrentWay());
-                    stationModel.sendMessage(msgToSemaphore); //message to change semaphores
                     int msgToArrows = 1 + (2 * stationModel.getCurrentWay());
-                    stationModel.sendMessage(msgToArrows); //message to change arrows
 
                     eventBuilder.id("1").data(stationModel.getCurrentWay()).build();
                     emitter.send(eventBuilder);
@@ -86,6 +84,8 @@ public class WebController {
                         break;
                     }
                     int msgToReceive = 65+(2 * stationModel.getCurrentWay());
+                    stationModel.sendMessage(msgToSemaphore); //message to change semaphores
+                    stationModel.sendMessage(msgToArrows); //message to change arrows
                     while(stationModel.convertReceived(stationModel.getReceivedMessage())!=msgToReceive) {
                         Thread.onSpinWait();
                     }
