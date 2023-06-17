@@ -190,7 +190,7 @@ public class StationModel {
             return;
         }
         if(convertReceived(receivedMessage) != checkControllerMessage) {
-            System.out.println("Checked successfully");
+            System.out.println("Error");
             Thread.sleep(5000);
             return;
         }
@@ -272,7 +272,12 @@ public class StationModel {
                     System.out.println("Checking " + i);
                     checkControllerMessage = checkControllerMessages.get(i);
                     sendMessage(checkControllerMessage);
-                    Thread.sleep(200);
+                    long delay = System.currentTimeMillis();
+                    while (true) {
+                        if (System.currentTimeMillis()-delay > 200) {
+                            break;
+                        }
+                    }
                 }
                 if(connectionErrorIds.contains(errorId)) {
                     break;
