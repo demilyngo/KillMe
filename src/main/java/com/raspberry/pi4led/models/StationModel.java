@@ -102,11 +102,13 @@ public class StationModel {
 //                        System.out.println(System.currentTimeMillis());
                         if (messageBitSet.get(i)) {
                             pin.high();
+                            System.out.println(System.currentTimeMillis() - frequencyTimer);
                             frequencyTimer = System.currentTimeMillis();
                             System.out.println("Sent: " + messageBitSet.get(i));
                             break;
                         }
                         pin.low();
+                        System.out.println(System.currentTimeMillis() - frequencyTimer);
                         frequencyTimer = System.currentTimeMillis();
                         System.out.println("Sent: " + messageBitSet.get(i));
                         break;
@@ -156,12 +158,12 @@ public class StationModel {
                 if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 10) {
                     if (pin.isLow()) {
                         receivedMessage.clear(i);
+                        System.out.println(System.currentTimeMillis() - frequencyTimer);
                         frequencyTimer = System.currentTimeMillis();
-                        System.out.println(System.currentTimeMillis());
                     } else {
                         receivedMessage.set(i);
+                        System.out.println(System.currentTimeMillis() - frequencyTimer);
                         frequencyTimer = System.currentTimeMillis();
-                        System.out.println(System.currentTimeMillis());
                     }
                     System.out.println("Received: " + receivedMessage.get(i));
                     break;
@@ -183,6 +185,11 @@ public class StationModel {
 
         if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
             System.out.println("Checked successfully");
+            return;
+        }
+        if(convertReceived(receivedMessage) != checkControllerMessage) {
+            System.out.println("Checked successfully");
+            Thread.sleep(5000);
             return;
         }
         if (errors.contains(convertReceived(receivedMessage))) { //errors handler
@@ -263,7 +270,7 @@ public class StationModel {
                     System.out.println("Checking " + i);
                     checkControllerMessage = checkControllerMessages.get(i);
                     sendMessage(checkControllerMessage);
-                    Thread.sleep(2000);
+                    Thread.sleep(200);
                 }
                 if(connectionErrorIds.contains(errorId)) {
                     break;
