@@ -100,9 +100,10 @@ public class StationModel {
             BitSet messageBitSet = convertToBitSet(message);
 
             frequencyTimer = System.currentTimeMillis();
+
             for (int i = 0; i!=messageLength; i++) {
                 while (true) {
-                    if (System.currentTimeMillis() - frequencyTimer >= 2) {
+                    if (System.currentTimeMillis() - frequencyTimer >= 4) {
 //                        System.out.println(System.currentTimeMillis());
                         if (messageBitSet.get(i)) {
                             pin.high();
