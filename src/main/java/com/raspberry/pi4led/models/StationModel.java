@@ -103,7 +103,7 @@ public class StationModel {
 
             for (int i = 0; i!=messageLength; i++) {
                 while (true) {
-                    if (System.currentTimeMillis() - frequencyTimer >= 4) {
+                    if (System.currentTimeMillis() - frequencyTimer >= 50) {
 //                        System.out.println(System.currentTimeMillis());
                         if (messageBitSet.get(i)) {
                             pin.high();
@@ -162,7 +162,7 @@ public class StationModel {
         System.out.println("Received: " + receivedMessage.get(0));
         for (int i = 1; i != messageLength; i++) {
             while (true) {
-                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 4) {
+                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 50) {
                     if (pin.isLow()) {
                         receivedMessage.clear(i);
                         System.out.println(System.currentTimeMillis() - frequencyTimer);
