@@ -125,6 +125,7 @@ public class StationModel {
 //                System.out.println("Sent: " + messageBitSet.get(i));
 //                Thread.sleep(10);
             }
+
             //pin.high();
             setInput();
             if(!isFalseMessage) {
@@ -143,6 +144,7 @@ public class StationModel {
     public void receiveMessage() throws InterruptedException {
         receivedMessage.clear();
         long startTime = System.currentTimeMillis();
+        System.out.println("After stop bit: " + (long)(startTime - frequencyTimer));
         while (pin.isHigh() && System.currentTimeMillis() - startTime < 3000) { // wait for start bit
             Thread.onSpinWait();
         }
