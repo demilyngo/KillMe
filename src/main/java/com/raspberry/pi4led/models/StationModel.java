@@ -92,7 +92,7 @@ public class StationModel {
                 System.out.println("Couldnt recceive. Repeating.");
                 long delay = System.currentTimeMillis();
                 while (true) {
-                    if (System.currentTimeMillis() - delay > 100)
+                    if (System.currentTimeMillis() - delay > 50)
                         break;
                 }
             }
@@ -102,7 +102,7 @@ public class StationModel {
             frequencyTimer = System.currentTimeMillis();
             for (int i = 0; i!=messageLength; i++) {
                 while (true) {
-                    if (System.currentTimeMillis() - frequencyTimer >= 4) {
+                    if (System.currentTimeMillis() - frequencyTimer >= 2) {
 //                        System.out.println(System.currentTimeMillis());
                         if (messageBitSet.get(i)) {
                             pin.high();
@@ -149,7 +149,7 @@ public class StationModel {
         receivedMessage.clear();
         long startTime = System.currentTimeMillis();
         System.out.println("After stop bit: " + (long)(startTime - frequencyTimer));
-        while (pin.isHigh() && System.currentTimeMillis() - startTime < 3000) { // wait for start bit
+        while (pin.isHigh() && System.currentTimeMillis() - startTime < 1000) { // wait for start bit
             Thread.onSpinWait();
         }
         if (pin.isHigh()) {
@@ -161,7 +161,7 @@ public class StationModel {
         System.out.println("Received: " + receivedMessage.get(0));
         for (int i = 1; i != messageLength; i++) {
             while (true) {
-                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 4) {
+                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 2) {
                     if (pin.isLow()) {
                         receivedMessage.clear(i);
                         System.out.println(System.currentTimeMillis() - frequencyTimer);
@@ -277,7 +277,7 @@ public class StationModel {
                     sendMessage(checkControllerMessage);
                     long delay = System.currentTimeMillis();
                     while (true) {
-                        if (System.currentTimeMillis()-delay > 100) {
+                        if (System.currentTimeMillis()-delay > 50) {
                             break;
                         }
                     }
@@ -288,7 +288,7 @@ public class StationModel {
                         sendMessage(checkControllerMessage);
                         long delay = System.currentTimeMillis();
                         while (true) {
-                            if (System.currentTimeMillis() - delay > 100) {
+                            if (System.currentTimeMillis() - delay > 50) {
                                 break;
                             }
                         }
