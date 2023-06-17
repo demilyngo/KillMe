@@ -272,14 +272,25 @@ public class StationModel {
 
         while (true) {
             try {
-                for (int i = 0; i!= 3; i++) { /////////////
-                    System.out.println("Checking " + i);
-                    checkControllerMessage = checkControllerMessages.get(i);
+                if(state == State.COMING) {
+                    checkControllerMessage = checkControllerMessages.get(0);
                     sendMessage(checkControllerMessage);
                     long delay = System.currentTimeMillis();
                     while (true) {
                         if (System.currentTimeMillis()-delay > 100) {
                             break;
+                        }
+                    }
+                } else {
+                    for (int i = 0; i != 3; i++) { /////////////
+                        System.out.println("Checking " + i);
+                        checkControllerMessage = checkControllerMessages.get(i);
+                        sendMessage(checkControllerMessage);
+                        long delay = System.currentTimeMillis();
+                        while (true) {
+                            if (System.currentTimeMillis() - delay > 100) {
+                                break;
+                            }
                         }
                     }
                 }

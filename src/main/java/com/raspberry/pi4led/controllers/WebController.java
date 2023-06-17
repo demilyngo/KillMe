@@ -19,6 +19,7 @@ public class WebController {
     private final ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
     final StationModel stationModel = new StationModel(State.WAITING, Control.FIELD, "Сургутская");
 
+
     @GetMapping("/")
     public String greeting(Model model) throws InterruptedException {
         model.addAttribute("station", stationModel);
@@ -32,43 +33,44 @@ public class WebController {
     @GetMapping(path = "/wait", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter prepareForSorting()  {
         SseEmitter emitter = new SseEmitter(-1L);
-        if(stationModel.getState() == State.WAITING) {
-            stationModel.setState(State.COMING);
-            //cached thread pool
-            try {
-                stationModel.sendMessage(15); //moving to position for sorting
-                while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
-                    if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 19) {
-                        var eventBuilder = SseEmitter.event();
-                        eventBuilder.id("1").data(stationModel.getCities().get(0));
-                        emitter.send(eventBuilder);
-                        stationModel.getReceivedMessage().clear();
+        cachedThreadPool.execute(() -> {
+            if(stationModel.getState() == State.WAITING) {
+                stationModel.setState(State.COMING);
+                //cached thread pool
+                try {
+                    stationModel.sendMessage(15); //moving to position for sorting
+                    while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
+                        if (stationModel.convertReceived(stationModel.getReceivedMessage()) == 19) {
+                            var eventBuilder = SseEmitter.event();
+                            eventBuilder.id("1").data(stationModel.getCities().get(0));
+                            emitter.send(eventBuilder);
+                            stationModel.getReceivedMessage().clear();
+                        }
                     }
-                }
-                var eventBuilder = SseEmitter.event();
-                stationModel.setState(State.READY);
-                eventBuilder.id("2").data("Ready to sort").build();
-                emitter.send(eventBuilder);
-
-                if (stationModel.getErrorId() != 0) {
-                    eventBuilder = SseEmitter.event();
-                    eventBuilder.id("3").data(stationModel.getErrorId()); //to open modal with error
+                    var eventBuilder = SseEmitter.event();
+                    stationModel.setState(State.READY);
+                    eventBuilder.id("2").data("Ready to sort").build();
                     emitter.send(eventBuilder);
+
+                    if (stationModel.getErrorId() != 0) {
+                        eventBuilder = SseEmitter.event();
+                        eventBuilder.id("3").data(stationModel.getErrorId()); //to open modal with error
+                        emitter.send(eventBuilder);
+                    }
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
             }
-        }
+        });
         return emitter;
     }
 
     @GetMapping(path = "/start", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseBody
     public SseEmitter startSorting(@RequestParam(value = "order", defaultValue = "0") String order) {
-        stationModel.setState(State.SORTING);
         SseEmitter emitter = new SseEmitter(-1L);
-
         cachedThreadPool.execute(() -> {
+            stationModel.setState(State.SORTING);
             try {
                 for(char way : order.toCharArray()) {
                     var eventBuilder = SseEmitter.event();
