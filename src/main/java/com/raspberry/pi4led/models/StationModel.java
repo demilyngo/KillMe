@@ -162,7 +162,7 @@ public class StationModel {
         System.out.println("Received: " + receivedMessage.get(0));
         for (int i = 1; i != messageLength; i++) {
             while (true) {
-                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 2) {
+                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 4) {
                     if (pin.isLow()) {
                         receivedMessage.clear(i);
                         System.out.println(System.currentTimeMillis() - frequencyTimer);
