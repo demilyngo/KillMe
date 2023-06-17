@@ -1,7 +1,7 @@
 document.querySelector(".modal-click").disabled = true;
 
 //ORDER OF WAGONS
-function showValues() {
+function checkOrder() {
     var str = $( "form" ).serializeArray();
     var order = "";
     var res = "order=";
@@ -9,10 +9,9 @@ function showValues() {
         order += elem.value;
     });
     res += order.split('').reverse().join('');
-    console.log(res);
     return res
 }
-$( "select" ).on( "change", showValues );
+$( "select" ).on( "change", checkOrder );
 
 
 
@@ -88,12 +87,7 @@ $("#startButton").click(function(e) {
     document.querySelector("#startButton").style.display = "none";
     document.querySelector("#overlay").style.display = "block";
     e.preventDefault();
-    order = showValues();
-    var str = $( "form" ).serializeArray();
-    var order = "order=";
-    str.forEach(function(elem) {
-        order += elem.value;
-    });
+    order = checkOrder();
 
     $(".state").text("Состояние: Сортировка");
     var wagonList = document.querySelectorAll(".selectWagon");
@@ -115,7 +109,8 @@ $("#startButton").click(function(e) {
             console.log('id: ' + event.lastEventId + ', data: ' + event.data);
             switch (event.lastEventId) {
                 case "1":
-                    document.querySelector(".wagonItems").removeChild(document.querySelector("#wagonItem" + toSortCounter));
+                    document.querySelector(".wagonItems")
+                        .removeChild(document.querySelector("#wagonItem" + toSortCounter));
                     toSortCounter -= 1;
                     $("#toSortCounter").text(toSortCounter);
                     $(".map").attr("src", "../images/Map_" + event.data + ".png");
@@ -124,7 +119,6 @@ $("#startButton").click(function(e) {
                     break;
                 case "2":
                     $(".state").text("Состояние: Отсортировано");
-                    for (let el of wagonList) {el.disabled = false;}
                     document.querySelector("#restartButton").style.display = "block";
                     eventSource.close();
                     console.log('connection is closed');
@@ -146,17 +140,17 @@ $("#startButton").click(function(e) {
     }
 })
 
-$("#restartButton").click(function(e) {
-    document.querySelector(".wagonItems").innerHTML = "";
-    $("#toSortCounter").text(0);
-    cities.forEach(element => {
-        $("#" + element).text(0);
-    })
-})
-
-$("#alarmButton").click(function(e) {
-    $(".modal-click").modal({fadeDuration: 250});
-    document.querySelector("#waitButton").style.display = "none";
-    document.querySelector("#startButton").style.display = "none";
-    document.querySelector("#restartButton").style.display = "block";
-})
+// $("#restartButton").click(function(e) {
+//     document.querySelector(".wagonItems").innerHTML = "";
+//     $("#toSortCounter").text(0);
+//     cities.forEach(element => {
+//         $("#" + element).text(0);
+//     })
+// })
+//
+// $("#alarmButton").click(function(e) {
+//     $(".modal-click").modal({fadeDuration: 250});
+//     document.querySelector("#waitButton").style.display = "none";
+//     document.querySelector("#startButton").style.display = "none";
+//     document.querySelector("#restartButton").style.display = "block";
+// })

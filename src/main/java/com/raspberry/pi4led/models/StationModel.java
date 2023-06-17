@@ -149,8 +149,8 @@ public class StationModel {
         }
         frequencyTimer = System.currentTimeMillis() + 3;
         receivedMessage.clear(0);
-        System.out.println("Received: " + receivedMessage.get(0));
         System.out.println(System.currentTimeMillis());
+        System.out.println("Received: " + receivedMessage.get(0));
         for (int i = 1; i != messageLength; i++) {
             while (true) {
                 if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 10) {

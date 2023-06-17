@@ -34,6 +34,7 @@ public class WebController {
         SseEmitter emitter = new SseEmitter(-1L);
         if(stationModel.getState() == State.WAITING) {
             stationModel.setState(State.COMING);
+            //cached thread pool
             try {
                 stationModel.sendMessage(15); //moving to position for sorting
                 while (stationModel.convertReceived(stationModel.getReceivedMessage()) != 21) {
@@ -77,7 +78,7 @@ public class WebController {
                     int msgToArrows = 1 + (2 * stationModel.getCurrentWay());
                     stationModel.sendMessage(msgToArrows); //message to change arrows
 
-                    eventBuilder.id("1").data("Map_" + stationModel.getCurrentWay()).build();
+                    eventBuilder.id("1").data(stationModel.getCurrentWay()).build();
                     emitter.send(eventBuilder);
                     if (stationModel.getErrorId() != 0) {
                         eventBuilder.id("3").data(stationModel.getErrorId()); //to open modal with error
@@ -106,11 +107,11 @@ public class WebController {
         stationModel.setState(State.WAITING);
         stationModel.setTrainCounter(0);
         stationModel.getWagonList().clear();
-        stationModel.getThreadListener().start();
         for (int i =0; i!= stationModel.getCounters().size(); i++) {
             stationModel.getCounters().set(i, 0);
         }
         stationModel.setCurrentWay(8);
+        stationModel.getThreadListener().start();
         return "redirect:/";
     }
 }
