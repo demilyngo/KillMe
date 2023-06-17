@@ -90,7 +90,11 @@ public class StationModel {
         do { //repeat if didnt receive proper response
             if(j > 0) {
                 System.out.println("Couldnt recceive. Repeating.");
-                Thread.sleep(2000);
+                long delay = System.currentTimeMillis();
+                while (true) {
+                    if (System.currentTimeMillis() - delay > 2000)
+                        break;
+                }
             }
             setOutput();
             BitSet messageBitSet = convertToBitSet(message);
@@ -288,12 +292,14 @@ public class StationModel {
         }
     };
     Thread threadListener = new Thread(listener);
+
     long listenerId = threadListener.getId();
 
     public StationModel(State state, Control control, String name) {
         this.state = state;
         this.control = control;
         this.nameOfStation = name;
+        threadListener.setPriority(Thread.MAX_PRIORITY);
         threadListener.start();
     }
 }
