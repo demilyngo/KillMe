@@ -92,7 +92,7 @@ public class StationModel {
                 System.out.println("Couldnt recceive. Repeating.");
                 long delay = System.currentTimeMillis();
                 while (true) {
-                    if (System.currentTimeMillis() - delay > 2000)
+                    if (System.currentTimeMillis() - delay > 100)
                         break;
                 }
             }
@@ -102,7 +102,7 @@ public class StationModel {
             frequencyTimer = System.currentTimeMillis();
             for (int i = 0; i!=messageLength; i++) {
                 while (true) {
-                    if (System.currentTimeMillis() - frequencyTimer >= 10) {
+                    if (System.currentTimeMillis() - frequencyTimer >= 4) {
 //                        System.out.println(System.currentTimeMillis());
                         if (messageBitSet.get(i)) {
                             pin.high();
@@ -161,7 +161,7 @@ public class StationModel {
         System.out.println("Received: " + receivedMessage.get(0));
         for (int i = 1; i != messageLength; i++) {
             while (true) {
-                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 10) {
+                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 4) {
                     if (pin.isLow()) {
                         receivedMessage.clear(i);
                         System.out.println(System.currentTimeMillis() - frequencyTimer);
@@ -193,11 +193,11 @@ public class StationModel {
             System.out.println("Checked successfully");
             return;
         }
-        if(convertReceived(receivedMessage) != checkControllerMessage) {
-            System.out.println("Error");
-            Thread.sleep(5000);
-            return;
-        }
+//        if(convertReceived(receivedMessage) != checkControllerMessage) {
+//            System.out.println("Error");
+//            Thread.sleep(5000);
+//            return;
+//        }
         if (errors.contains(convertReceived(receivedMessage))) { //errors handler
             errorId = executionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
             return;
@@ -278,7 +278,7 @@ public class StationModel {
                     sendMessage(checkControllerMessage);
                     long delay = System.currentTimeMillis();
                     while (true) {
-                        if (System.currentTimeMillis()-delay > 1000) {
+                        if (System.currentTimeMillis()-delay > 100) {
                             break;
                         }
                     }
