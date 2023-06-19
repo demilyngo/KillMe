@@ -83,10 +83,10 @@ public class StationModel {
     }
 
     public synchronized void sendMessage(Integer message) throws InterruptedException {
-        setOutput();
         BitSet messageBitSet = convertToBitSet(message);
         int j = 0;
         do { //repeat if didnt receive proper response
+            setOutput();
             if(j > 0) {
                 System.out.println("Couldnt recceive. Repeating.");
                 long delay = System.currentTimeMillis();
