@@ -249,11 +249,11 @@ public class StationModel {
         while (true) {
             try {
                 if(state == State.COMING) {
-                    checkControllerMessage = checkControllerMessages.get(1);
+                    checkControllerMessage = checkControllerMessages.get(0);
                     isBusy = true;
                     sendMessage(checkControllerMessage);
                     isBusy = false;
-                    Thread.sleep(3000);
+                    Thread.sleep(500);
                     long delay = System.currentTimeMillis();
                     while (true) {
                         if (System.currentTimeMillis()-delay >= 50) {
