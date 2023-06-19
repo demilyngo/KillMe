@@ -255,7 +255,7 @@ public class StationModel {
                         }
                     }
                 } else {
-                    for (int i = 0; i != 3; i++) { /////////////
+                    for (int i = 1; i != 2; i++) { /////////////
                         System.out.println("Checking " + i);
                         checkControllerMessage = checkControllerMessages.get(i);
                         sendMessage(checkControllerMessage);
