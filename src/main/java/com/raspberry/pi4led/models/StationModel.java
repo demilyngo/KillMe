@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
-
 @Getter
 @Setter
 public class StationModel {
@@ -14,7 +13,7 @@ public class StationModel {
     private final int controllerLength = 2;
     private final int taskLength = 4;
     private final int messageLength = startBitLength+controllerLength+taskLength+stopBitLength;
-    long frequencyTimer = System.currentTimeMillis();
+    long frequencyTimer;
 
     private ArrayList<Integer> checkControllerMessages = new ArrayList<>(Arrays.asList(1, 33, 65, 97));
     private Integer checkControllerMessage;
@@ -25,9 +24,8 @@ public class StationModel {
 
     private State state;
     private Control control;
-
-
     private int trainCounter;
+
     private int currentWay = 8;
     private String nameOfStation;
 
@@ -39,7 +37,6 @@ public class StationModel {
     ArrayList<String> cities = new ArrayList<String>(Arrays.asList("Москва", "Казань", "Магадан", "Воркута", "Якутск", "Тюмень"));
     ArrayList<Integer> counters = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0));
     ArrayList<wagonModel> wagonList = new ArrayList<wagonModel>();
-
     public void setInput() {
         if (pin == null) {
             pin = gpioController.provisionDigitalMultipurposePin(RaspiPin.GPIO_01, PinMode.DIGITAL_INPUT);
@@ -86,6 +83,8 @@ public class StationModel {
     }
 
     public synchronized void sendMessage(Integer message) throws InterruptedException {
+        setOutput();
+        BitSet messageBitSet = convertToBitSet(message);
         int j = 0;
         do { //repeat if didnt receive proper response
             if(j > 0) {
@@ -96,52 +95,35 @@ public class StationModel {
                         break;
                 }
             }
-            setOutput();
-            BitSet messageBitSet = convertToBitSet(message);
-
             frequencyTimer = System.currentTimeMillis();
-
             for (int i = 0; i!=messageLength; i++) {
                 while (true) {
                     if (System.currentTimeMillis() - frequencyTimer >= 50) {
-//                        System.out.println(System.currentTimeMillis());
                         if (messageBitSet.get(i)) {
                             pin.high();
                             System.out.println(System.currentTimeMillis() - frequencyTimer);
-                            frequencyTimer = System.currentTimeMillis();
                             System.out.println("Sent: " + messageBitSet.get(i));
+                            frequencyTimer = System.currentTimeMillis();
                             break;
                         }
                         pin.low();
                         System.out.println(System.currentTimeMillis() - frequencyTimer);
-                        frequencyTimer = System.currentTimeMillis();
                         System.out.println("Sent: " + messageBitSet.get(i));
+                        frequencyTimer = System.currentTimeMillis();
                         break;
                     }
                 }
-//                System.out.println(System.currentTimeMillis());
-//                if (messageBitSet.get(i)) {
-//                    pin.high();
-//                    System.out.println("Sent: " + messageBitSet.get(i));
-//                    Thread.sleep(10);
-//                    continue;
-//                }
-//                pin.low();
-//                System.out.println("Sent: " + messageBitSet.get(i));
-//                Thread.sleep(10);
             }
-
-            //pin.high();
             setInput();
             if(!isFalseMessage) {
                 receiveMessage();
             }
             j++;
         } while(j != 5
-                && convertReceived(receivedMessage) == 0 //menat?
+                && convertReceived(receivedMessage) == 0
                 && !isFalseMessage);
         if (j == 5) {
-            errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage)); // menat
+            errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
         }
     }
 
@@ -150,59 +132,49 @@ public class StationModel {
         receivedMessage.clear();
         long startTime = System.currentTimeMillis();
         System.out.println("After stop bit: " + (long)(startTime - frequencyTimer));
-        while (pin.isHigh() && System.currentTimeMillis() - startTime < 1000) { // wait for start bit
-            Thread.onSpinWait();
+        while (true) {
+            if(!pin.isHigh() && System.currentTimeMillis() - startTime > 1000) {
+                break;
+            }
         }
+//        while (pin.isHigh() && System.currentTimeMillis() - startTime < 1000) { // wait for start bit
+//            Thread.onSpinWait();
+//        }
         if (pin.isHigh()) {
             return;
         }
-        frequencyTimer = System.currentTimeMillis() + 3;
+
         receivedMessage.clear(0);
         System.out.println(System.currentTimeMillis());
         System.out.println("Received: " + receivedMessage.get(0));
+        frequencyTimer = System.currentTimeMillis() + 3;
         for (int i = 1; i != messageLength; i++) {
             while (true) {
                 if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 50) {
                     if (pin.isLow()) {
                         receivedMessage.clear(i);
-                        System.out.println(System.currentTimeMillis() - frequencyTimer);
-                        frequencyTimer = System.currentTimeMillis();
                     } else {
                         receivedMessage.set(i);
-                        System.out.println(System.currentTimeMillis() - frequencyTimer);
-                        frequencyTimer = System.currentTimeMillis();
                     }
                     System.out.println("Received: " + receivedMessage.get(i));
+                    System.out.println(System.currentTimeMillis() - frequencyTimer);
+                    frequencyTimer = System.currentTimeMillis();
                     break;
                 }
             }
         }
-
-//        Thread.sleep(10);
-//        for (int i = 1; i != messageLength; i++) {
-//            if (pin.isLow()) {
-//                receivedMessage.clear(i);
-//            } else {
-//                receivedMessage.set(i);
-//            }
-//            System.out.println("Received: " + receivedMessage.get(i));
-//            Thread.sleep(10);
-//        }
         System.out.println("Whole message: " + convertReceived(receivedMessage));
 
         if (convertReceived(receivedMessage) == checkControllerMessage) { //controller is connected
             System.out.println("Checked successfully");
             return;
         }
-//        if(convertReceived(receivedMessage) != checkControllerMessage) {
-//            System.out.println("Error");
-//            Thread.sleep(5000);
-//            return;
-//        }
         if (errors.contains(convertReceived(receivedMessage))) { //errors handler
             errorId = executionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
             return;
-        } else if (convertReceived(receivedMessage) == 19) { //counter at the start  17
+        }
+
+        if (convertReceived(receivedMessage) == 19) { //counter at the start
             if (this.state == State.COMING) {
                 trainCounter++;
                 wagonModel newWagon = new wagonModel(trainCounter, cities.get(0), 0);
@@ -274,11 +246,11 @@ public class StationModel {
         while (true) {
             try {
                 if(state == State.COMING) {
-                    checkControllerMessage = checkControllerMessages.get(0);
+                    checkControllerMessage = checkControllerMessages.get(1);
                     sendMessage(checkControllerMessage);
                     long delay = System.currentTimeMillis();
                     while (true) {
-                        if (System.currentTimeMillis()-delay > 50) {
+                        if (System.currentTimeMillis()-delay >= 50) {
                             break;
                         }
                     }
@@ -289,7 +261,7 @@ public class StationModel {
                         sendMessage(checkControllerMessage);
                         long delay = System.currentTimeMillis();
                         while (true) {
-                            if (System.currentTimeMillis() - delay > 50) {
+                            if (System.currentTimeMillis() - delay >= 50) {
                                 break;
                             }
                         }
