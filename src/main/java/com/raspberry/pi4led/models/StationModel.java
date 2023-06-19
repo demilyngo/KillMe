@@ -8,6 +8,8 @@ import java.util.*;
 @Getter
 @Setter
 public class StationModel {
+    private boolean isTryingToLoadPage = false;
+
     private final int startBitLength = 1;
     private final int stopBitLength = 1;
     private final int controllerLength = 2;
@@ -248,6 +250,8 @@ public class StationModel {
                 if(state == State.COMING) {
                     checkControllerMessage = checkControllerMessages.get(1);
                     sendMessage(checkControllerMessage);
+                    isTryingToLoadPage = false;
+                    Thread.sleep(3000);
                     long delay = System.currentTimeMillis();
                     while (true) {
                         if (System.currentTimeMillis()-delay >= 50) {
@@ -259,6 +263,8 @@ public class StationModel {
                         System.out.println("Checking " + i);
                         checkControllerMessage = checkControllerMessages.get(i);
                         sendMessage(checkControllerMessage);
+                        isTryingToLoadPage = false;
+                        Thread.sleep(3000);
                         long delay = System.currentTimeMillis();
                         while (true) {
                             if (System.currentTimeMillis() - delay >= 50) {
