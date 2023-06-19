@@ -8,6 +8,7 @@ import java.util.*;
 @Getter
 @Setter
 public class StationModel {
+    private boolean isBusy = false;
     private boolean isTryingToLoadPage = false;
 
     private final int startBitLength = 1;
@@ -245,12 +246,13 @@ public class StationModel {
             e.printStackTrace();
         }
 
-        while (true) {
+        while (!isTryingToLoadPage) {
             try {
                 if(state == State.COMING) {
                     checkControllerMessage = checkControllerMessages.get(1);
+                    isBusy = true;
                     sendMessage(checkControllerMessage);
-                    isTryingToLoadPage = false;
+                    isBusy = false;
                     Thread.sleep(3000);
                     long delay = System.currentTimeMillis();
                     while (true) {
@@ -262,8 +264,9 @@ public class StationModel {
                     for (int i = 1; i != 2; i++) { /////////////
                         System.out.println("Checking " + i);
                         checkControllerMessage = checkControllerMessages.get(i);
+                        isBusy = true;
                         sendMessage(checkControllerMessage);
-                        isTryingToLoadPage = false;
+                        isBusy = false;
                         Thread.sleep(3000);
                         long delay = System.currentTimeMillis();
                         while (true) {
