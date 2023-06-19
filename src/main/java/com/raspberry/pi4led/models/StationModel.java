@@ -246,7 +246,7 @@ public class StationModel {
             e.printStackTrace();
         }
 
-        while (!isTryingToLoadPage) {
+        while (true) {
             try {
                 if(state == State.COMING) {
                     checkControllerMessage = checkControllerMessages.get(1);
@@ -278,6 +278,9 @@ public class StationModel {
                 }
                 if(connectionErrorIds.contains(errorId)) {
                     break;
+                }
+                while (isTryingToLoadPage) {
+                    Thread.onSpinWait();
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

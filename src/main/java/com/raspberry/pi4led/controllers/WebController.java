@@ -32,7 +32,6 @@ public class WebController {
         model.addAttribute("counters", stationModel.getCounters());
         model.addAttribute("wagonList", stationModel.getWagonList());
         stationModel.setTryingToLoadPage(false);
-        stationModel.getThreadListener().start();
         return "index";
     }
 
