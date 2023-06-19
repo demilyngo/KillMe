@@ -261,13 +261,13 @@ public class StationModel {
                         }
                     }
                 } else {
-                    for (int i = 1; i != 2; i++) { /////////////
+                    for (int i = 0; i != 3; i++) { /////////////
                         System.out.println("Checking " + i);
                         checkControllerMessage = checkControllerMessages.get(i);
                         isBusy = true;
                         sendMessage(checkControllerMessage);
                         isBusy = false;
-                        Thread.sleep(3000);
+                        Thread.sleep(500);
                         long delay = System.currentTimeMillis();
                         while (true) {
                             if (System.currentTimeMillis() - delay >= 50) {
