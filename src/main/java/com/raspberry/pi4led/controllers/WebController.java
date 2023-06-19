@@ -21,7 +21,7 @@ public class WebController {
 
 
     @GetMapping("/")
-    public String greeting(Model model) throws InterruptedException {
+    public String greeting(Model model){
         model.addAttribute("station", stationModel);
         model.addAttribute("cities", stationModel.getCities());
         model.addAttribute("counters", stationModel.getCounters());
