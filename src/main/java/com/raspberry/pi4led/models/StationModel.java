@@ -133,7 +133,7 @@ public class StationModel {
         long startTime = System.currentTimeMillis();
         System.out.println("After stop bit: " + (long)(startTime - frequencyTimer));
         while (true) {
-            if(!pin.isHigh() && System.currentTimeMillis() - startTime > 1000) {
+            if(!pin.isHigh() || System.currentTimeMillis() - startTime > 1000) {
                 break;
             }
         }
