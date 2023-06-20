@@ -26,12 +26,12 @@ public class WebController {
             Thread.onSpinWait();
         }
         stationModel.setTryingToLoadPage(true);
-
         model.addAttribute("station", stationModel);
         model.addAttribute("cities", stationModel.getCities());
         model.addAttribute("counters", stationModel.getCounters());
         model.addAttribute("wagonList", stationModel.getWagonList());
         stationModel.setTryingToLoadPage(false);
+        stationModel.sendMessage(49);
         return "index";
     }
 
