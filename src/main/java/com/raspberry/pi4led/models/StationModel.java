@@ -94,14 +94,14 @@ public class StationModel {
                 System.out.println("Couldnt recceive. Repeating.");
                 long delay = System.currentTimeMillis();
                 while (true) {
-                    if (System.currentTimeMillis() - delay > 50)
+                    if (System.currentTimeMillis() - delay > 200)
                         break;
                 }
             }
             frequencyTimer = System.currentTimeMillis();
             for (int i = 0; i!=messageLength; i++) {
                 while (true) {
-                    if (System.currentTimeMillis() - frequencyTimer >= 10) {
+                    if (System.currentTimeMillis() - frequencyTimer >= 30) {
                         if (messageBitSet.get(i)) {
                             pin.high();
                             System.out.println(System.currentTimeMillis() - frequencyTimer);
@@ -153,7 +153,7 @@ public class StationModel {
         frequencyTimer = System.currentTimeMillis() + 3;
         for (int i = 1; i != messageLength; i++) {
             while (true) {
-                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 10) {
+                if (frequencyTimer < System.currentTimeMillis() && System.currentTimeMillis() - frequencyTimer >= 30) {
                     if (pin.isLow()) {
                         receivedMessage.clear(i);
                     } else {
@@ -267,10 +267,9 @@ public class StationModel {
                     isBusy = true;
                     sendMessage(checkControllerMessage);
                     isBusy = false;
-                    Thread.sleep(50);
                     long delay = System.currentTimeMillis();
                     while (true) {
-                        if (System.currentTimeMillis() - delay >= 50) {
+                        if (System.currentTimeMillis() - delay >= 200) {
                             break;
                         }
                     }
