@@ -125,9 +125,9 @@ public class StationModel {
         } while(j != 5
                 && convertReceived(receivedMessage) == 0
                 && !isFalseMessage);
-        if (j == 5) {
-            errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
-        }
+//        if (j == 5) {
+//            errorId = connectionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
+//        }
     }
 
 
@@ -172,10 +172,10 @@ public class StationModel {
             System.out.println("Checked successfully");
             return;
         }
-        if (errors.contains(convertReceived(receivedMessage))) { //errors handler
-            errorId = executionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
-            return;
-        }
+//        if (errors.contains(convertReceived(receivedMessage))) { //errors handler
+//            errorId = executionErrorIds.get(checkControllerMessages.indexOf(checkControllerMessage));
+//            return;
+//        }
 
         if (convertReceived(receivedMessage) == 19) { //counter at the start
             if (this.state == State.COMING) {
@@ -278,9 +278,9 @@ public class StationModel {
                         }
 
                     }
-                    if (connectionErrorIds.contains(errorId)) {
-                        break;
-                    }
+//                    if (connectionErrorIds.contains(errorId)) {
+//                        break;
+//                    }
                     while (isTryingToLoadPage) {
                         Thread.onSpinWait();
                     }
