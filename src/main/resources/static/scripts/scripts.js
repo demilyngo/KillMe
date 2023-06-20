@@ -113,16 +113,18 @@ $("#startButton").click(function(e) {
                     toSortCounter -= 1;
                     $("#toSortCounter").text(toSortCounter);
                     $(".map").attr("src", "../images/Map_" + event.data + ".png");
+                    break;
+                case "2":
                     var cityToAddCounter = $("#" + cities[parseInt(event.data, 10) - 1]);
                     cityToAddCounter.text(parseInt(cityToAddCounter.text(), 10) + 1);
                     break;
-                case "2":
+                case "3":
                     $(".state").text("Состояние: Отсортировано");
                     document.querySelector("#restartButton").style.display = "block";
                     eventSource.close();
                     console.log('connection is closed');
                     break;
-                case "3":
+                case "4":
                     if(event.data < 5) {
                         $("#controllerError").text("Ошибка в работе контроллера " + event.data);
                     }

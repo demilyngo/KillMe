@@ -79,15 +79,17 @@ public class WebController {
             stationModel.setState(State.SORTING);
             try {
                 for(char way : order.toCharArray()) {
-                    var eventBuilder = SseEmitter.event();
                     stationModel.setCurrentWay(Character.getNumericValue(way)+1);
+
+                    var eventBuilder = SseEmitter.event();
+                    eventBuilder.id("1").data(stationModel.getCurrentWay()).build();
+                    emitter.send(eventBuilder);
+
                     int msgToSemaphore = 33 + (2 * stationModel.getCurrentWay());
                     int msgToArrows = 1 + (2 * stationModel.getCurrentWay());
 
-                    eventBuilder.id("1").data(stationModel.getCurrentWay()).build();
-                    emitter.send(eventBuilder);
                     if (stationModel.getErrorId() != 0) {
-                        eventBuilder.id("3").data(stationModel.getErrorId()); //to open modal with error
+                        eventBuilder.id("4").data(stationModel.getErrorId()); //to open modal with error
                         emitter.send(eventBuilder);
                         break;
                     }
@@ -97,6 +99,9 @@ public class WebController {
                     while(stationModel.convertReceived(stationModel.getReceivedMessage())!=msgToReceive) {
                         Thread.onSpinWait();
                     }
+                    eventBuilder = SseEmitter.event();
+                    eventBuilder.id("2").data(stationModel.getCurrentWay()).build();
+
                 }
                 stationModel.sendMessage(49);
                 var eventBuilder = SseEmitter.event();
