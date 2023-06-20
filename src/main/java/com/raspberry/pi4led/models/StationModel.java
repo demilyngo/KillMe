@@ -250,13 +250,18 @@ public class StationModel {
             try {
                 if(state == State.COMING) {
                     checkControllerMessage = checkControllerMessages.get(0);
+                    isBusy = true;
                     sendMessage(checkControllerMessage);
+                    isBusy = false;
                     Thread.sleep(500);
                     long delay = System.currentTimeMillis();
                     while (true) {
                         if (System.currentTimeMillis()-delay >= 50) {
                             break;
                         }
+                    }
+                    while (isTryingToLoadPage) {
+                        Thread.onSpinWait();
                     }
                 } else {
                     for (int i = 0; i != 3; i++) { /////////////
