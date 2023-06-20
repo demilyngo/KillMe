@@ -94,7 +94,7 @@ public class StationModel {
                 System.out.println("Couldnt recceive. Repeating.");
                 long delay = System.currentTimeMillis();
                 while (true) {
-                    if (System.currentTimeMillis() - delay > 200)
+                    if (System.currentTimeMillis() - delay > 50)
                         break;
                 }
             }
@@ -269,7 +269,7 @@ public class StationModel {
                     isBusy = false;
                     long delay = System.currentTimeMillis();
                     while (true) {
-                        if (System.currentTimeMillis() - delay >= 200) {
+                        if (System.currentTimeMillis() - delay >= 50) {
                             break;
                         }
                     }

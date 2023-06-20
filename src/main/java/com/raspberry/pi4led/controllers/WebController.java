@@ -98,6 +98,7 @@ public class WebController {
                         Thread.onSpinWait();
                     }
                 }
+                stationModel.sendMessage(49);
                 var eventBuilder = SseEmitter.event();
                 stationModel.setState(State.SORTED);
                 eventBuilder.id("2").data("Done sorting").build();
