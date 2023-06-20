@@ -248,38 +248,37 @@ public class StationModel {
 
         while (true) {
             try {
-//                if(state == State.COMING) {
-//                    checkControllerMessage = checkControllerMessages.get(0);
-//                    isBusy = true;
-//                    sendMessage(checkControllerMessage);
-//                    isBusy = false;
-//                    Thread.sleep(500);
-//                    long delay = System.currentTimeMillis();
-//                    while (true) {
-//                        if (System.currentTimeMillis()-delay >= 50) {
-//                            break;
-//                        }
-//                    }
-//                } else {
-                for (int i = 0; i != 3; i++) { /////////////
-                    System.out.println("Checking " + i);
-                    checkControllerMessage = checkControllerMessages.get(i);
-                    isBusy = true;
+                if(state == State.COMING) {
+                    checkControllerMessage = checkControllerMessages.get(0);
                     sendMessage(checkControllerMessage);
-                    isBusy = false;
+                    Thread.sleep(500);
                     long delay = System.currentTimeMillis();
                     while (true) {
-                        if (System.currentTimeMillis() - delay >= 50) {
+                        if (System.currentTimeMillis()-delay >= 50) {
                             break;
                         }
                     }
+                } else {
+                    for (int i = 0; i != 3; i++) { /////////////
+                        System.out.println("Checking " + i);
+                        checkControllerMessage = checkControllerMessages.get(i);
+                        isBusy = true;
+                        sendMessage(checkControllerMessage);
+                        isBusy = false;
+                        long delay = System.currentTimeMillis();
+                        while (true) {
+                            if (System.currentTimeMillis() - delay >= 50) {
+                                break;
+                            }
+                        }
 
-                }
-                if(connectionErrorIds.contains(errorId)) {
-                    break;
-                }
-                while (isTryingToLoadPage) {
-                    Thread.onSpinWait();
+                    }
+                    if (connectionErrorIds.contains(errorId)) {
+                        break;
+                    }
+                    while (isTryingToLoadPage) {
+                        Thread.onSpinWait();
+                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
